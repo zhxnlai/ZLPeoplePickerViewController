@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLPeoplePickerNavigationViewController.h"
 
-@interface ZLPeoplePickerViewController : UITableViewController
+#import "ZLBaseTableViewController.h"
+
+@interface ZLPeoplePickerViewController : ZLBaseTableViewController
 
 @end
