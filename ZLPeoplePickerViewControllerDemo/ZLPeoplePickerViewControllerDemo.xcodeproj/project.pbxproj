@@ -12,7 +12,6 @@
 		094FA07D1A0C592F00A19F44 /* LRIndexedCollationWithSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0731A0C592F00A19F44 /* LRIndexedCollationWithSearch.m */; };
 		094FA07E1A0C592F00A19F44 /* ZLBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0751A0C592F00A19F44 /* ZLBaseTableViewController.m */; };
 		094FA07F1A0C592F00A19F44 /* ZLResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */; };
-		094FA0801A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0791A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.m */; };
 		094FA0811A0C592F00A19F44 /* ZLPeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */; };
 		0971D4A61A09B01600325B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0971D4A51A09B01600325B8D /* main.m */; };
 		0971D4A91A09B01600325B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0971D4A81A09B01600325B8D /* AppDelegate.m */; };
@@ -43,8 +42,6 @@
 		094FA0751A0C592F00A19F44 /* ZLBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseTableViewController.m; sourceTree = "<group>"; };
 		094FA0761A0C592F00A19F44 /* ZLResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLResultsTableViewController.h; sourceTree = "<group>"; };
 		094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLResultsTableViewController.m; sourceTree = "<group>"; };
-		094FA0781A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPeoplePickerNavigationViewController.h; sourceTree = "<group>"; };
-		094FA0791A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerNavigationViewController.m; sourceTree = "<group>"; };
 		094FA07A1A0C592F00A19F44 /* ZLPeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPeoplePickerViewController.h; sourceTree = "<group>"; };
 		094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerViewController.m; sourceTree = "<group>"; };
 		0971D4A01A09B01600325B8D /* ZLPeoplePickerViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLPeoplePickerViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,8 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				094FA06F1A0C592F00A19F44 /* Internal */,
-				094FA0781A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.h */,
-				094FA0791A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.m */,
 				094FA07A1A0C592F00A19F44 /* ZLPeoplePickerViewController.h */,
 				094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */,
 			);
@@ -97,8 +92,7 @@
 		094FA06F1A0C592F00A19F44 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				094FA0701A0C592F00A19F44 /* APContact+Sorting.h */,
-				094FA0711A0C592F00A19F44 /* APContact+Sorting.m */,
+				094FA0821A0D405500A19F44 /* Categories */,
 				094FA0721A0C592F00A19F44 /* LRIndexedCollationWithSearch.h */,
 				094FA0731A0C592F00A19F44 /* LRIndexedCollationWithSearch.m */,
 				094FA0741A0C592F00A19F44 /* ZLBaseTableViewController.h */,
@@ -107,6 +101,15 @@
 				094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */,
 			);
 			path = Internal;
+			sourceTree = "<group>";
+		};
+		094FA0821A0D405500A19F44 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				094FA0701A0C592F00A19F44 /* APContact+Sorting.h */,
+				094FA0711A0C592F00A19F44 /* APContact+Sorting.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		0971D4971A09B01600325B8D = {
@@ -324,7 +327,6 @@
 				094FA07E1A0C592F00A19F44 /* ZLBaseTableViewController.m in Sources */,
 				094FA07F1A0C592F00A19F44 /* ZLResultsTableViewController.m in Sources */,
 				094FA07C1A0C592F00A19F44 /* APContact+Sorting.m in Sources */,
-				094FA0801A0C592F00A19F44 /* ZLPeoplePickerNavigationViewController.m in Sources */,
 				094FA0811A0C592F00A19F44 /* ZLPeoplePickerViewController.m in Sources */,
 				0971D4A91A09B01600325B8D /* AppDelegate.m in Sources */,
 				0971D4A61A09B01600325B8D /* main.m in Sources */,

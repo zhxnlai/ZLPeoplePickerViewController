@@ -20,10 +20,7 @@
 @interface ZLPeoplePickerViewController () <ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate, ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) APAddressBook *addressBook;
-@property (nonatomic, assign) ABAddressBookRef addressBookRef;
-
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-
 @property (nonatomic, strong) UISearchController *searchController;
 @property (strong, nonatomic) ZLResultsTableViewController *resultsTableViewController;
 
@@ -34,27 +31,17 @@
 @end
 
 @implementation ZLPeoplePickerViewController
+- (instancetype)initWithType:(ZLPeoplePickerViewControllerType)type {
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        [self setup];
+        _type = type;
+    }
+    return self;
+}
 
-- (instancetype)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
 - (void)setup {
     self.addressBook = [[APAddressBook alloc] init];
-    _addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
-}
-- (void)loadView {
-    [super loadView];
 }
 
 - (void)viewDidLoad {
@@ -77,7 +64,6 @@
     // hierarchy until it finds the root view controller or one that defines a presentation context.
     //
     self.definesPresentationContext = YES;  // know where you want UISearchController to be displayed
-
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.tableView addSubview:self.refreshControl];
@@ -90,7 +76,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showNewPersonViewController)];
     
     [self refreshControlAction:self.refreshControl];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -108,7 +93,32 @@
     }
 }
 
+//- (void)didMoveToParentViewController:(UIViewController *)parent {
+//    if (![parent isEqual:self.parentViewController]) {
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingleDidReturn:)]) {
+//            [self.delegate peoplePickerViewControllerTypeSingleDidReturn:self];
+//        }
+//    }
+//}
+
 #pragma mark - Action
++ (void)presentPeoplePickerViewControllerWithType:(ZLPeoplePickerViewControllerType)type forParentViewController:(UIViewController *)parentViewController {
+    UINavigationController *navController = [[UINavigationController alloc] init];
+    ZLPeoplePickerViewController *peoplePicker = [[ZLPeoplePickerViewController alloc] initWithType:type];
+    [navController pushViewController:peoplePicker animated:NO];
+    peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:peoplePicker action:@selector(doneButtonAction:)];
+    peoplePicker.delegate = parentViewController;
+    [parentViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)doneButtonAction:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeMultiple:didReturnWithSelectedPeople:)]) {
+        [self.delegate peoplePickerViewControllerTypeMultiple:self didReturnWithSelectedPeople: [self.selectedPeople copy]];
+    }
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)refreshControlAction:(UIRefreshControl *)aRefreshControl {
     [aRefreshControl beginRefreshing];
     [self reloadData:^(BOOL succeeded, NSError *error) {
@@ -117,20 +127,13 @@
 }
 
 - (void)reloadData {
-    __weak __typeof(self) weakSelf = self;
-    [self loadContacts:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            NSLog(@"loaded contacts");
-            [weakSelf.tableView reloadData];
-        }
-    }];
+    [self reloadData:nil];
 }
 
 - (void)reloadData:(void (^)(BOOL succeeded, NSError *error))completionBlock {
     __weak __typeof(self) weakSelf = self;
     [self loadContacts:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            NSLog(@"loaded contacts");
             [weakSelf.tableView reloadData];
             completionBlock(YES,nil);
         } else {
@@ -142,28 +145,37 @@
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *) aSearchBar
-{
+- (void)searchBarCancelButtonClicked:(UISearchBar *) aSearchBar {
     [aSearchBar resignFirstResponder];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)aSearchBar
-{
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)aSearchBar {
     [aSearchBar setShowsCancelButton:YES animated:YES];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)aSearchBar
-{
+- (void)searchBarTextDidEndEditing:(UISearchBar *)aSearchBar {
     [aSearchBar setShowsCancelButton:NO animated:YES];
 }
 
-
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
-    [self showPersonViewController:[contact.recordID intValue]];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingle:didSelectPerson:)]) {
+        [self.delegate peoplePickerViewControllerTypeSingle:self didSelectPerson:contact.recordID];
+    }
+    
+    if (self.type == ZLPeoplePickerViewControllerTypeMultiple) {
+        if ([self.selectedPeople containsObject:contact.recordID]) {
+            [self.selectedPeople removeObject:contact.recordID];
+        } else {
+            [self.selectedPeople addObject:contact.recordID];
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 
@@ -273,53 +285,6 @@
 }
 
 #pragma mark - ABAdressBookUI
-#pragma mark Display and edit a person
-// Called when users tap "Display and Edit Contact" in the application. Searches for a contact named "Appleseed" in
-// in the address book. Displays and allows editing of all information associated with that contact if
-// the search is successful. Shows an alert, otherwise.
--(void)showPersonViewController: (ABRecordID) recordId
-{
-    // Search for the person named "Appleseed" in the address book
-    //    NSArray *people = (NSArray *)CFBridgingRelease(ABAddressBookCopyPeopleWithName(self.addressBook, CFSTR("Appleseed")));
-    ABRecordRef person = ( ABRecordRef)(ABAddressBookGetPersonWithRecordID(self.addressBookRef, recordId));
-    
-//    DLog(@"record id: %i", recordId);
-    // Display "Appleseed" information if found in the address book
-    //    if ((people != nil) && [people count])
-    if (person != NULL)
-    {
-        //        ABRecordRef person = (__bridge ABRecordRef)[people objectAtIndex:0];
-        ABPersonViewController *picker = [[ABPersonViewController alloc] init];
-        picker.personViewDelegate = self;
-        picker.displayedPerson = person;
-        // Allow users to edit the person’s information
-        picker.allowsEditing = YES;
-        picker.allowsActions = NO;
-        picker.shouldShowLinkedPeople = YES;
-//        picker.displayedProperties = @[@(kABPersonPhoneProperty)];
-//        [picker setHighlightedItemForProperty:kABPersonPhoneProperty withIdentifier:0];
-        [self.navigationController pushViewController:picker animated:YES];
-    }
-    else
-    {
-        // Show an alert if "Appleseed" is not in Contacts
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Could not find the person in the Contacts application"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
-#pragma mark ABPersonViewControllerDelegate methods
-// Does not allow users to perform default actions such as dialing a phone number, when they select a contact property.
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person
-                    property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
-{
-    return NO;
-}
-
 
 #pragma mark Create a new person
 // Called when users tap "Create New Contact" in the application. Allows users to create a new contact.

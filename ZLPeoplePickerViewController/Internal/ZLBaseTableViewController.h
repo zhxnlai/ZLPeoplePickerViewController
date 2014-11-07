@@ -15,6 +15,7 @@ static NSString * const kCellIdentifier = @"cellID";
 @interface ZLBaseTableViewController : UITableViewController
 
 @property (strong, nonatomic) NSMutableArray *partitionedContacts;
+@property (strong, nonatomic) NSMutableSet *selectedPeople;
 
 
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts;

@@ -20,6 +20,12 @@
     }
     return _partitionedContacts;
 }
+- (NSMutableSet *)selectedPeople {
+    if (!_selectedPeople) {
+        _selectedPeople = [NSMutableSet set];
+    }
+    return _selectedPeople;
+}
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts {
     self.partitionedContacts = [[self emptyPartitionedArray] mutableCopy];
 
@@ -94,13 +100,20 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
-        //        cell.accessoryView = nil;
+        // cell.accessoryView = nil;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        //        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        // cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     
-    [self configureCell:cell forContact:[self contactForRowAtIndexPath:indexPath]];
+    APContact *contact = [self contactForRowAtIndexPath:indexPath];
+    [self configureCell:cell forContact:contact];
     
+    if ([self.selectedPeople containsObject:contact.recordID]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
     return cell;
     
 }
