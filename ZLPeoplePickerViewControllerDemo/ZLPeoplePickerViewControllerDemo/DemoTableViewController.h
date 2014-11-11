@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-//typedef NS_ENUM(NSInteger, DemoTableViewControllerSections) {
-//    DemoTableViewControllerSectionsSectionPicker,
-//    DemoTableViewControllerSectionsSectionPickerNav,
-//    DemoTableViewControllerSectionsSectionMultiPicker,
-//    DemoTableViewControllerSectionsSectionCount,
-//};
-
 // UITableView
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSections) {
     DemoTableViewControllerSectionPresentationType,
@@ -61,13 +54,6 @@ typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionReturnActionTypes) {
     DemoTableViewControllerSectionReturnActionTypeAlert,
     DemoTableViewControllerSectionReturnActionTypeCount,
 };
-
-// seg: nav or not
-// selection type: single, multiple, custom(slider 0(test case)-10)
-// alert, msg
-// present
-
-
 
 @interface DemoTableViewController : UITableViewController
 

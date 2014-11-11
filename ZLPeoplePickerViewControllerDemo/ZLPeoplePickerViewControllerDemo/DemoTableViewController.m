@@ -76,13 +76,10 @@ static int numSelectionSliderMaxValue = 10;
     }
     if (self.returnActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionReturnActionTypeEmail) {
         NSArray *toRecipients = [self emailsForPeople:people];
-        NSLog(@"recipients: %@", toRecipients);
         [self showMailPicker:toRecipients];
     } else {
         [self presentViewController: [self alertControllerWithTitle:@"Return with selected people:" Message:[[self firstNameForPeople:people] componentsJoinedByString:@", "]] animated:YES completion:nil];
     }
-    
-    
 }
 
 #pragma mark - Table view data source

@@ -8,13 +8,11 @@
 
 #import "ZLPeoplePickerViewController.h"
 #import "ZLResultsTableViewController.h"
-#import "LRIndexedCollationWithSearch.h"
 
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 
 #import "APAddressBook.h"
-#import "APContact.h"
 #import "APContact+Sorting.h"
 
 @interface ZLPeoplePickerViewController () <ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate, ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>

@@ -20,8 +20,6 @@
 }
 
 - (NSArray *)linkedContacts {
-//    NSInteger recordId = [self.recordID intValue];
-//    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID ( ABAddressBookRef addressBook, ABRecordID recordID );
     return nil;
 }
 
@@ -35,12 +33,10 @@
             
             mutableArray[i] = [[phone componentsSeparatedByCharactersInSet:setToKeep] componentsJoinedByString:@""];
         }
-        NSLog(@"san phones: %@", mutableArray);
+//        NSLog(@"san phones: %@", mutableArray);
 
         return [mutableArray copy];
         
-
-    
 //    static dispatch_once_t onceToken;
 //    dispatch_once(&onceToken, ^{
 //        NSMutableArray *mutableArray = [self.phones mutableCopy];
