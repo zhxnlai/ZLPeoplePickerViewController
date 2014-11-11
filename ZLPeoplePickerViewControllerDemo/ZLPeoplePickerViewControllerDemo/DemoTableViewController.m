@@ -24,6 +24,7 @@ static int numSelectionSliderMaxValue = 10;
 @property (strong, nonatomic) UISegmentedControl * numSelectionSegmentedControl;
 @property (strong, nonatomic) UISlider * numSelectionSlider;
 @property (strong, nonatomic) UILabel *numSelectionLabel;
+@property (strong, nonatomic) UISegmentedControl * fieldMaskSegmentedControl;
 @property (strong, nonatomic) UISegmentedControl *selectionActionSegmentedControl;
 @property (strong, nonatomic) UISegmentedControl *returnActionSegmentedControl;
 @end
@@ -32,9 +33,10 @@ static int numSelectionSliderMaxValue = 10;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
-
     self.navigationItem.title = @"ZLPeoplePickerViewController";
+    
+    _addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
+    [ZLPeoplePickerViewController initializeAddressBook];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,10 +72,8 @@ static int numSelectionSliderMaxValue = 10;
     }
 }
 - (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people {
+    if (!people || people.count==0) {return;}
     
-    if (!people || people.count==0) {
-        return;
-    }
     if (self.returnActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionReturnActionTypeEmail) {
         NSArray *toRecipients = [self emailsForPeople:people];
         [self showMailPicker:toRecipients];
@@ -145,12 +145,22 @@ static int numSelectionSliderMaxValue = 10;
 
         }
             break;
+        case DemoTableViewControllerSectionFieldMaskType:
+        {
+            cell.textLabel.text = @"FieldMask";
+            UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"Phones", @"Emails", @"Photo"]];
+            control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            control.selectedSegmentIndex = 0;
+            cell.accessoryView = control;
+            self.fieldMaskSegmentedControl = control;
+        }
+            break;
         case DemoTableViewControllerSectionActionType:
         {
             switch (indexPath.row) {
                 case DemoTableViewControllerSectionActionTypeRowSelection:
                 {
-                    cell.textLabel.text = @"Selection Action";
+                    cell.textLabel.text = @"DidSelectAction";
                     UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"PersonVC", @"Alert"]];
                     control.selectedSegmentIndex = 0;
                     control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -160,7 +170,7 @@ static int numSelectionSliderMaxValue = 10;
                     break;
                 case DemoTableViewControllerSectionActionTypeRowReturn:
                 {
-                    cell.textLabel.text = @"Return Action";
+                    cell.textLabel.text = @"DidReturnAction";
                     UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"Send Emails", @"Alert"]];
                     control.selectedSegmentIndex = 0;
                     control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -196,8 +206,12 @@ static int numSelectionSliderMaxValue = 10;
         self.peoplePicker = [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
     }
     
-    if (self.returnActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionReturnActionTypeEmail) {
+    if (self.fieldMaskSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionFieldMaskTypePhones) {
+        self.peoplePicker.filedMask = ZLContactFieldPhones;
+    } else if (self.fieldMaskSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionFieldMaskTypeEmails) {
         self.peoplePicker.filedMask = ZLContactFieldEmails;
+    } else {
+        self.peoplePicker.filedMask = ZLContactFieldPhoto;
     }
     
     if (self.numSelectionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeNone) {
@@ -252,8 +266,8 @@ static int numSelectionSliderMaxValue = 10;
     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
     [picker setToRecipients:recipients];
-    [picker setSubject:@"check out ZLPeoplePickerViewController!"];
-    NSString *emailBody = @"check out ZLPeoplePickerViewController!";
+    [picker setSubject:@"Check Out ZLPeoplePickerViewController!"];
+    NSString *emailBody = @"Check Out ZLPeoplePickerViewController at https://github.com/zhxnlai/ZLPeoplePickerViewController";
     [picker setMessageBody:emailBody isHTML:NO];
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -333,7 +347,10 @@ static int numSelectionSliderMaxValue = 10;
 - (NSArray *)firstNameForPeople:(NSArray *)recordIds {
     NSMutableArray *firstNames = [NSMutableArray array];
     for (NSNumber *recordId in recordIds) {
-        [firstNames addObject:[self firstNameForPerson:recordId]];
+        NSString *firstName = [self firstNameForPerson:recordId];
+        if (firstName) {
+            [firstNames addObject:firstName];
+        }
     }
     return firstNames;
 }

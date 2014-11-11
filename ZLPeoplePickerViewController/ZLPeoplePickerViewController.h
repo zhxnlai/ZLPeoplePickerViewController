@@ -35,6 +35,7 @@
 @property (weak, nonatomic) id<ZLPeoplePickerViewControllerDelegate> delegate;
 @property (nonatomic) ZLNumSelection numberOfSelectedPeople;
 
++ (void)initializeAddressBook;
 //- (id)init __attribute__((unavailable("-init is not allowed, use -initWithType: instead")));
 - (id)initWithStyle:(UITableViewStyle)style __attribute__((unavailable("-initWithStyle is not allowed, use -init instead")));
 + (instancetype)presentPeoplePickerViewControllerForParentViewController:(UIViewController *)parentViewController;

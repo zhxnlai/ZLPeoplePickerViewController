@@ -5,13 +5,19 @@ A drop-in contact picker that supports UILocalized​Indexed​Collation
 
 Preview
 ---
+###Present ABPersonViewController on select
+![ABPersonViewController](Previews/personVCPreview.gif)
+###Send group emails on return
+![Group Emails](Previews/emailsPreview.gif)
+###Custom Multiple Select
+![Custom Multiple Select](Previews/mulSelectPreview.gif)
 
 Features
 ---
 - Supports multilingual indexing and sorting by implementing UILocalized​Indexed​Collation using [LRIndexedCollationWithSearch](https://gist.github.com/305676/c128784d22fcf572d3beded690ce84f85449d7c7).
-- Supports searching for name, email, address. The results are displayed using UISearchController in iOS 8.
+- Supports searching by name, emails and addresses. The results are displayed using UISearchController in iOS 8.
 - Supports multiple selection.
-- Supports field mask.
+- Supports field mask for filtering contacts.
 
 CocoaPods
 ---
@@ -33,6 +39,11 @@ self.peoplePicker.delegate = self;
 There is also a convenience method for presenting the people picker modally.
 ~~~objective-c
 self.peoplePicker = [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
+~~~
+
+Loading a large addressBook may take a long time. That's why ZLPeoplePickerViewController caches the addressBook in memory after it is first initialized. You can even further reduce the delay by calling this class method in advance (for instance, in `viewDidLoad`).
+~~~objective-c
++ (void)initializeAddressBook;
 ~~~
 
 ZLPeoplePickerViewController uses the fieldMask property to filter contacts, graying out those that have missing information. Currently supported fields inlucde phones, emails, photo and addresses.
@@ -60,7 +71,7 @@ A ZLPeoplePickerViewController can have an optional delegate to receive callback
 
 TODOs
 ---
-- Support searching for phone number
+- Support searching by phone number
 
 Depandency
 ---

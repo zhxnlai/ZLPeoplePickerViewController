@@ -12,12 +12,10 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 
-#import "APAddressBook.h"
+#import "ZLAddressBook.h"
 #import "APContact+Sorting.h"
 
 @interface ZLPeoplePickerViewController () <ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate, ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
-
-@property (strong, nonatomic) APAddressBook *addressBook;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (strong, nonatomic) ZLResultsTableViewController *resultsTableViewController;
@@ -39,9 +37,12 @@
 }
 
 - (void)setup {
-    self.addressBook = [[APAddressBook alloc] init];
     _numberOfSelectedPeople = ZLNumSelectionNone;
     self.filedMask = ZLContactFieldDefault;
+}
+
++ (void)initializeAddressBook {
+    [[ZLAddressBook sharedInstance] loadContacts:nil];
 }
 
 - (void)viewDidLoad {
@@ -76,6 +77,9 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showNewPersonViewController)];
     
     [self refreshControlAction:self.refreshControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addressBookDidChangeNotification:) name:ZLAddressBookDidChangeNotification object:nil];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,6 +101,10 @@
     if (![parent isEqual:self.parentViewController]) {
         [self invokeReturnDelegate];
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ZLAddressBookDidChangeNotification object:nil];
 }
 
 #pragma mark - Action
@@ -122,18 +130,31 @@
     }];
 }
 
+- (void)addressBookDidChangeNotification:(NSNotification *)note {
+    [self performSelector:@selector(reloadData) withObject:nil];
+}
+
 - (void)reloadData {
     [self reloadData:nil];
 }
 
 - (void)reloadData:(void (^)(BOOL succeeded, NSError *error))completionBlock {
     __weak __typeof(self) weakSelf = self;
-    [self loadContacts:^(BOOL succeeded, NSError *error) {
+    if ([ZLAddressBook sharedInstance].contacts.count>0) {
+        [weakSelf setPartitionedContactsWithContacts:[ZLAddressBook sharedInstance].contacts];
+        [weakSelf.tableView reloadData];
+    }
+    [[ZLAddressBook sharedInstance] loadContacts:^(BOOL succeeded, NSError *error) {
         if (!error) {
+            [weakSelf setPartitionedContactsWithContacts:[ZLAddressBook sharedInstance].contacts];
             [weakSelf.tableView reloadData];
-            completionBlock(YES,nil);
+            if (completionBlock) {
+                completionBlock(YES,nil);
+            }
         } else {
-            completionBlock(NO,nil);
+            if (completionBlock) {
+                completionBlock(NO,nil);
+            }
         }
     }];
 }
@@ -200,17 +221,9 @@
         searchItems = [strippedStr componentsSeparatedByString:@" "];
     }
     // build all the "AND" expressions for each value in the searchString
-    //
     NSMutableArray *andMatchPredicates = [NSMutableArray array];
     
     for (NSString *searchString in searchItems) {
-        // each searchString creates an OR predicate for: name, yearIntroduced, introPrice
-        //
-        // example if searchItems contains "iphone 599 2007":
-        //      name CONTAINS[c] "iphone"
-        //      name CONTAINS[c] "599", yearIntroduced ==[c] 599, introPrice ==[c] 599
-        //      name CONTAINS[c] "2007", yearIntroduced ==[c] 2007, introPrice ==[c] 2007
-        //
         NSMutableArray *searchItemsPredicate = [NSMutableArray array];
         
         // TODO: match phone number matching
@@ -262,37 +275,10 @@
     [tableController.tableView reloadData];
 }
 
-#pragma mark - APAddressBook
-
-- (void)loadContacts:(void (^)(BOOL succeeded, NSError *error))completionBlock {
-    __weak __typeof(self) weakSelf = self;
-    self.addressBook.fieldsMask = APContactFieldFirstName | APContactFieldLastName | APContactFieldCompositeName | APContactFieldPhones | APContactFieldThumbnail |APContactFieldRecordID |APContactFieldEmails |APContactFieldAddresses;
-    self.addressBook.filterBlock = ^BOOL(APContact *contact) {
-        return contact.phones.count > 0 && contact.compositeName != nil;
-    };
-    [self.addressBook loadContacts:^(NSArray *contacts, NSError *error) {
-        if (!error)
-        {
-            [weakSelf setPartitionedContactsWithContacts:contacts];
-            if (completionBlock) {
-                completionBlock(YES,nil);
-            }
-        }
-        else {
-            if (completionBlock) {
-                completionBlock(NO,error);
-            }
-        }
-    }];
-    [self.addressBook startObserveChangesWithCallback:^{
-        [weakSelf reloadData];
-    }];
-}
 
 #pragma mark - ABAdressBookUI
 
 #pragma mark Create a new person
-// Called when users tap "Create New Contact" in the application. Allows users to create a new contact.
 -(void)showNewPersonViewController
 {
     ABNewPersonViewController *picker = [[ABNewPersonViewController alloc] init];
