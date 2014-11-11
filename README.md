@@ -47,8 +47,15 @@ The numberOfSelectedPeople property controls the multiple selection behavior. It
 
 A ZLPeoplePickerViewController can have an optional delegate to receive callback.
 ~~~objective-c
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId;
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people;
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId {
+    // show an ABPersonViewController
+    [self showPersonViewController:[recordId intValue] onNavigationController:peoplePicker.navigationController];
+}
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people {
+    // people will be empty if no person is selected
+    if (!people || people.count==0) {return;}
+    [self presentViewController: [self alertControllerWithTitle:@"Return with selected people:" Message:[[self firstNameForPeople:people] componentsJoinedByString:@", "]] animated:YES completion:nil];
+}
 ~~~
 
 TODOs
