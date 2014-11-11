@@ -196,6 +196,10 @@ static int numSelectionSliderMaxValue = 10;
         self.peoplePicker = [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
     }
     
+    if (self.returnActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionReturnActionTypeEmail) {
+        self.peoplePicker.filedMask = ZLContactFieldEmails;
+    }
+    
     if (self.numSelectionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeNone) {
         self.peoplePicker.numberOfSelectedPeople = ZLNumSelectionNone;
     } else if (self.numSelectionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeMax) {

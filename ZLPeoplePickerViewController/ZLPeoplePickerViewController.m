@@ -41,7 +41,7 @@
 - (void)setup {
     self.addressBook = [[APAddressBook alloc] init];
     _numberOfSelectedPeople = ZLNumSelectionNone;
-    _filedMask = ZLContactFieldDefault;
+    self.filedMask = ZLContactFieldDefault;
 }
 
 - (void)viewDidLoad {
@@ -159,6 +159,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
+
+    if (![tableView isEqual:self.tableView]) {
+        contact = [(ZLResultsTableViewController *)self.searchController.searchResultsController contactForRowAtIndexPath:indexPath];
+    }
+    
+    if (![self shouldEnableCellforContact:contact]) {return;}
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewController:didSelectPerson:)]) {
         [self.delegate peoplePickerViewController:self didSelectPerson:contact.recordID];
     }
@@ -171,9 +178,11 @@
         }
     }
     
+//    NSLog(@"heree");
+    
+    [tableView reloadData];
     [self.tableView reloadData];
 }
-
 
 #pragma mark - UISearchResultsUpdating
 
@@ -247,6 +256,8 @@
     
     // hand over the filtered results to our search results table
     ZLResultsTableViewController *tableController = (ZLResultsTableViewController *)self.searchController.searchResultsController;
+    tableController.filedMask = self.filedMask;
+    tableController.selectedPeople = self.selectedPeople;
     [tableController setPartitionedContactsWithContacts: searchResults];
     [tableController.tableView reloadData];
 }

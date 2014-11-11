@@ -43,6 +43,12 @@ delegate
 
 ~~~
 
+TODO
+---
+search phone number
+
+search and select
+
 CocoaPods
 ---
 You can install `ZLPeoplePickerViewController` through CocoaPods adding the following to your Podfile:

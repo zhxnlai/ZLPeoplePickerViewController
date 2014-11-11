@@ -9,21 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ZLBaseTableViewController.h"
 
-typedef NS_ENUM(NSUInteger, ZLNumSelection) {
-    ZLNumSelectionNone   = 0,
-    ZLNumSelectionMax    = NSUIntegerMax
-};
-
-typedef NS_OPTIONS(NSUInteger , ZLContactField) {
-    ZLContactFieldCompany          = 1 << 2,
-    ZLContactFieldPhones           = 1 << 3,
-    ZLContactFieldEmails           = 1 << 4,
-    ZLContactFieldPhoto            = 1 << 5,
-    ZLContactFieldAddresses        = 1 << 9,
-    ZLContactFieldDefault          = ZLContactFieldPhones,
-    ZLContactFieldAll              = 0xFFFF
-};
-
 @class ZLPeoplePickerViewController;
 
 @protocol ZLPeoplePickerViewControllerDelegate <NSObject>
@@ -48,7 +33,6 @@ typedef NS_OPTIONS(NSUInteger , ZLContactField) {
 
 @interface ZLPeoplePickerViewController : ZLBaseTableViewController
 @property (weak, nonatomic) id<ZLPeoplePickerViewControllerDelegate> delegate;
-@property (nonatomic) ZLContactField filedMask;
 @property (nonatomic) ZLNumSelection numberOfSelectedPeople;
 
 //- (id)init __attribute__((unavailable("-init is not allowed, use -initWithType: instead")));

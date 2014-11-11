@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLTypes.h"
 
 @class APContact;
 
@@ -17,9 +18,11 @@ static NSString * const kCellIdentifier = @"cellID";
 @property (strong, nonatomic) NSMutableArray *partitionedContacts;
 @property (strong, nonatomic) NSMutableSet *selectedPeople;
 
+@property (nonatomic) ZLContactField filedMask;
 
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts;
 - (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)product;
+- (BOOL)shouldEnableCellforContact:(APContact *)contact;
 - (APContact *)contactForRowAtIndexPath:(NSIndexPath*)indexPath;
 
 @end

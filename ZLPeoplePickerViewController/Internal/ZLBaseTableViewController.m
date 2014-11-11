@@ -155,16 +155,27 @@
     [attributedString addAttribute:NSFontAttributeName
                              value:[UIFont boldSystemFontOfSize:18]
                              range:rangeToHightlight];
+    if (![self shouldEnableCellforContact:contact]) {
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0,attributedString.length)];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
     [attributedString endEditing];
     
     cell.textLabel.attributedText = attributedString;
+}
+
+- (BOOL)shouldEnableCellforContact:(APContact *)contact {
+    return ((self.filedMask & ZLContactFieldPhones) && contact.phones.count>0) ||
+    ((self.filedMask & ZLContactFieldEmails) && contact.emails.count>0) ||
+    ((self.filedMask & ZLContactFieldPhoto) && contact.thumbnail) ||
+    ((self.filedMask & ZLContactFieldAddresses) && contact.addresses.count>0);
 }
 
 - (APContact *)contactForRowAtIndexPath:(NSIndexPath*)indexPath {
     return [[self.partitionedContacts objectAtIndex:(NSUInteger) indexPath.section] objectAtIndex:(NSUInteger) indexPath.row];
 }
 
-#pragma mark - ()
 - (NSMutableArray *)emptyPartitionedArray {
     NSUInteger sectionCount = [[[LRIndexedCollationWithSearch currentCollation] sectionTitles] count];
     NSMutableArray *sections = [NSMutableArray arrayWithCapacity:sectionCount];
