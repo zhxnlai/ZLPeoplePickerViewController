@@ -11,35 +11,78 @@
 
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <MessageUI/MessageUI.h>
 
-@interface DemoTableViewController () <ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate, ZLPeoplePickerViewControllerDelegate>
+static int numSelectionSliderMaxValue = 10;
 
+@interface DemoTableViewController () <ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate, ZLPeoplePickerViewControllerDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, assign) ABAddressBookRef addressBookRef;
 
+@property (nonatomic, strong) ZLPeoplePickerViewController *peoplePicker;
+
+@property (strong, nonatomic) UISegmentedControl *presentationSegmentedControl;
+@property (strong, nonatomic) UISegmentedControl * numSelectionSegmentedControl;
+@property (strong, nonatomic) UISlider * numSelectionSlider;
+@property (strong, nonatomic) UILabel *numSelectionLabel;
+@property (strong, nonatomic) UISegmentedControl *selectionActionSegmentedControl;
+@property (strong, nonatomic) UISegmentedControl *returnActionSegmentedControl;
 @end
+
 @implementation DemoTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
 
-    self.navigationItem.title = @"Demo";
+    self.navigationItem.title = @"ZLPeoplePickerViewController";
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self numSelectionSegmentedControlAction:self.numSelectionSegmentedControl];
+}
+
+- (void)numSelectionSegmentedControlAction:(UISegmentedControl *)control {
+    self.selectionActionSegmentedControl.enabled = control.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeNone;
+    self.returnActionSegmentedControl.enabled = control.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeMax;
+    self.numSelectionSlider.enabled = control.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeCustom;
+    
+    if (self.numSelectionSlider.enabled) {
+        [self numSelectionSliderAction:self.numSelectionSlider];
+    }
+}
+
+- (void)numSelectionSliderAction:(UISlider *)slider {
+    self.numSelectionLabel.text = [self customNumSelectionTypeDescription];
+    
+    self.selectionActionSegmentedControl.enabled = [self customNumSelectionType] == ZLNumSelectionNone;
+    self.returnActionSegmentedControl.enabled = [self customNumSelectionType] != ZLNumSelectionNone;
 }
 
 #pragma mark - ZLPeoplePickerViewControllerDelegate
 - (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId {
     if (peoplePicker.numberOfSelectedPeople==ZLNumSelectionNone) {
-        
-        [self showPersonViewController:[recordId intValue]];
+        if (self.selectionActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionSelectionActionTypePersonViewController) {
+            [self showPersonViewController:[recordId intValue] onNavigationController:peoplePicker.navigationController];
+        } else {
+            [peoplePicker presentViewController: [self alertControllerWithTitle:@"You have selected:" Message:[self firstNameForPerson:recordId]] animated:YES completion:nil];
+        }
     }
 }
 - (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people {
     
-        NSLog(@"llllog");
+    if (!people || people.count==0) {
+        return;
+    }
+    if (self.returnActionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionReturnActionTypeEmail) {
+        NSArray *toRecipients = [self emailsForPeople:people];
+        NSLog(@"recipients: %@", toRecipients);
+        [self showMailPicker:toRecipients];
+    } else {
+        [self presentViewController: [self alertControllerWithTitle:@"Return with selected people:" Message:[[self firstNameForPeople:people] componentsJoinedByString:@", "]] animated:YES completion:nil];
+    }
     
     
-    NSLog(@"llllogl");
-
 }
 
 #pragma mark - Table view data source
@@ -49,29 +92,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case DemoTableViewControllerSectionPresentationType:
-            return DemoTableViewControllerSectionPresentationTypeCount;
-            break;
-        case DemoTableViewControllerSectionNumSelectionType:
-            return DemoTableViewControllerSectionNumSelectionTypeCount;
-            break;
-        case DemoTableViewControllerSectionNumSelectionSlider:
-            return 1;
-            break;
-        case DemoTableViewControllerSectionSelectionActionType:
-            return DemoTableViewControllerSectionSelectionActionTypeCount;
-            break;
-        case DemoTableViewControllerSectionReturnActionType:
-            return DemoTableViewControllerSectionReturnActionTypeCount;
-            break;
-        case DemoTableViewControllerSectionShowButton:
-            return 1;
-            break;
-        default:
-            break;
+    if (section==DemoTableViewControllerSectionNumSelectionType) {
+        return DemoTableViewControllerSectionNumSelectionTypeRowCount;
     }
-    return 0;
+    if (section==DemoTableViewControllerSectionActionType) {
+        return DemoTableViewControllerSectionActionTypeRowCount;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -79,24 +106,80 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];}
 
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     switch (indexPath.section) {
         case DemoTableViewControllerSectionPresentationType:
-            ;
+        {
+            cell.textLabel.text = @"Segue Type";
+            UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"Push", @"Modal"]];
+            control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            control.selectedSegmentIndex = 0;
+            cell.accessoryView = control;
+            self.presentationSegmentedControl = control;
+        }
             break;
         case DemoTableViewControllerSectionNumSelectionType:
+        {
+            switch (indexPath.row) {
+                case DemoTableViewControllerSectionNumSelectionTypeRowSegmentedControl:
+                {
+                    cell.textLabel.text = @"NumSelectedPeople";
+                    UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Max", @"Custom"]];
+                    control.selectedSegmentIndex = 0;
+                    cell.accessoryView = control;
+                    [control addTarget:self action:@selector(numSelectionSegmentedControlAction:) forControlEvents:UIControlEventValueChanged];
+                    self.numSelectionSegmentedControl = control;
+                }
+                    break;
+                case DemoTableViewControllerSectionNumSelectionTypeRowSlider:
+                {
+                    cell.textLabel.text = [self customNumSelectionTypeDescription];
+                    self.numSelectionLabel = cell.textLabel;
+                    UISlider *control = [[UISlider alloc] init];
+                    control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                    cell.accessoryView = control;
+                    [control addTarget:self action:@selector(numSelectionSliderAction:) forControlEvents:UIControlEventValueChanged];
+                    self.numSelectionSlider = control;
+                }
+                default:
+                    break;
+            }
 
+        }
             break;
-        case DemoTableViewControllerSectionNumSelectionSlider:
-//            return 1;
-            break;
-        case DemoTableViewControllerSectionSelectionActionType:
+        case DemoTableViewControllerSectionActionType:
+        {
+            switch (indexPath.row) {
+                case DemoTableViewControllerSectionActionTypeRowSelection:
+                {
+                    cell.textLabel.text = @"Selection Action";
+                    UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"PersonVC", @"Alert"]];
+                    control.selectedSegmentIndex = 0;
+                    control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                    cell.accessoryView = control;
+                    self.selectionActionSegmentedControl = control;
+                }
+                    break;
+                case DemoTableViewControllerSectionActionTypeRowReturn:
+                {
+                    cell.textLabel.text = @"Return Action";
+                    UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:@[@"Send Emails", @"Alert"]];
+                    control.selectedSegmentIndex = 0;
+                    control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                    cell.accessoryView = control;
+                    self.returnActionSegmentedControl = control;
+                }
+                default:
+                    break;
+            }
 
-            break;
-        case DemoTableViewControllerSectionReturnActionType:
-            ;
+        }
             break;
         case DemoTableViewControllerSectionShowButton:
-
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.textLabel.text = @"Show People Picker";
+            cell.textLabel.textColor = self.view.tintColor;
             break;
         default:
             break;
@@ -106,49 +189,32 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section != DemoTableViewControllerSectionShowButton) {return;}
     
-//    switch (indexPath.section) {
-//        case DemoTableViewControllerSectionsSectionPicker:
-//        {
-//            ZLPeoplePickerViewController *peoplePVC = [[ZLPeoplePickerViewController alloc] init];
-//            peoplePVC.delegate = self;
-//            [self.navigationController pushViewController:peoplePVC animated:YES];
-//        }
-//            break;
-//        case DemoTableViewControllerSectionsSectionPickerNav:
-//        {
-////            ZLPeoplePickerNavigationViewController *peoplePVCNav = [[ZLPeoplePickerNavigationViewController alloc] init];
-////            [self.navigationController presentViewController:peoplePVCNav animated:YES completion:nil];
-//            [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
-//        }
-//            break;
-//        case DemoTableViewControllerSectionsSectionMultiPicker:
-//        {
-//            [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
-//
-//        }
-//            break;
-//        default:
-//            break;
-//    }
+    if (self.presentationSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionPresentationTypeNormal ) {
+        self.peoplePicker = [[ZLPeoplePickerViewController alloc] init];
+        self.peoplePicker.delegate = self;
+        [self.navigationController pushViewController:self.peoplePicker animated:YES];
+    } else {
+        self.peoplePicker = [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
+    }
+    
+    if (self.numSelectionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeNone) {
+        self.peoplePicker.numberOfSelectedPeople = ZLNumSelectionNone;
+    } else if (self.numSelectionSegmentedControl.selectedSegmentIndex == DemoTableViewControllerSectionNumSelectionTypeMax) {
+        self.peoplePicker.numberOfSelectedPeople = ZLNumSelectionMax;
+    } else {
+        self.peoplePicker.numberOfSelectedPeople = [self customNumSelectionType];
+    }
 }
 
 #pragma mark Display and edit a person
-// Called when users tap "Display and Edit Contact" in the application. Searches for a contact named "Appleseed" in
-// in the address book. Displays and allows editing of all information associated with that contact if
-// the search is successful. Shows an alert, otherwise.
--(void)showPersonViewController: (ABRecordID) recordId
+-(void)showPersonViewController: (ABRecordID) recordId onNavigationController:(UINavigationController *)navigationController
 {
-    // Search for the person named "Appleseed" in the address book
-    //    NSArray *people = (NSArray *)CFBridgingRelease(ABAddressBookCopyPeopleWithName(self.addressBook, CFSTR("Appleseed")));
     ABRecordRef person = ( ABRecordRef)(ABAddressBookGetPersonWithRecordID(self.addressBookRef, recordId));
-    
-    //    DLog(@"record id: %i", recordId);
-    // Display "Appleseed" information if found in the address book
-    //    if ((people != nil) && [people count])
+
     if (person != NULL)
     {
-        //        ABRecordRef person = (__bridge ABRecordRef)[people objectAtIndex:0];
         ABPersonViewController *picker = [[ABPersonViewController alloc] init];
         picker.personViewDelegate = self;
         picker.displayedPerson = person;
@@ -156,9 +222,7 @@
         picker.allowsEditing = YES;
         picker.allowsActions = NO;
         picker.shouldShowLinkedPeople = YES;
-        //        picker.displayedProperties = @[@(kABPersonPhoneProperty)];
-        //        [picker setHighlightedItemForProperty:kABPersonPhoneProperty withIdentifier:0];
-        [self.navigationController pushViewController:picker animated:YES];
+        [navigationController pushViewController:picker animated:YES];
     }
     else
     {
@@ -179,5 +243,129 @@
     return NO;
 }
 
+
+
+#pragma mark - Compose Mail/SMS
+- (void)displayMailComposerSheet:(NSArray *)recipients
+{
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+    [picker setToRecipients:recipients];
+    [picker setSubject:@"check out ZLPeoplePickerViewController!"];
+    NSString *emailBody = @"check out ZLPeoplePickerViewController!";
+    [picker setMessageBody:emailBody isHTML:NO];
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)showMailPicker:(NSArray *)recipients
+{
+    // You must check that the current device can send email messages before you
+    // attempt to create an instance of MFMailComposeViewController.  If the
+    // device can not send email messages,
+    // [[MFMailComposeViewController alloc] init] will return nil.  Your app
+    // will crash when it calls -presentViewController:animated:completion: with
+    // a nil view controller.
+    if ([MFMailComposeViewController canSendMail])
+        // The device can send email.
+    {
+        [self displayMailComposerSheet:recipients];
+    }
+    else
+        // The device can not send email.
+    {
+        UIAlertView* alert =
+        [[UIAlertView alloc] initWithTitle: @"Cannot send text"
+                                   message: @"Device not configured to send email."
+                                  delegate: self
+                         cancelButtonTitle: @"OK"
+                         otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    // Notifies users about errors associated with the interface
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            break;
+        case MFMailComposeResultSaved:
+            break;
+        case MFMailComposeResultSent:
+            break;
+        case MFMailComposeResultFailed:
+            break;
+        default:
+            //            self.feedbackMsg.text = @"Result: Mail not sent";
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - ()
+- (NSString *)customNumSelectionTypeDescription {
+    return [NSString stringWithFormat:@"Custom: %lu Selected People",[self customNumSelectionType]];
+}
+- (ZLNumSelection)customNumSelectionType {
+    return self.numSelectionSlider.value*numSelectionSliderMaxValue;
+}
+- (UIAlertController *)alertControllerWithTitle:(NSString *)title Message:(NSString *)message {
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) { [alert dismissViewControllerAnimated:YES completion:nil];}];
+    [alert addAction:ok];
+    return alert;
+}
+- (NSArray *)emailsForPeople:(NSArray *)recordIds {
+    NSMutableArray *emails = [NSMutableArray array];
+    for (NSNumber *recordId in recordIds) {
+        [emails addObjectsFromArray:[self emailsForPerson:recordId]];
+    }
+    return emails;
+}
+- (NSArray *)emailsForPerson:(NSNumber *)recordId {
+    return [self arrayProperty:kABPersonEmailProperty fromRecord:[self recordRefFromRecordId:recordId]];
+}
+- (NSArray *)firstNameForPeople:(NSArray *)recordIds {
+    NSMutableArray *firstNames = [NSMutableArray array];
+    for (NSNumber *recordId in recordIds) {
+        [firstNames addObject:[self firstNameForPerson:recordId]];
+    }
+    return firstNames;
+}
+- (NSString *)firstNameForPerson:(NSNumber *)recordId {
+    NSString* firstName = (__bridge_transfer NSString*)ABRecordCopyValue([self recordRefFromRecordId:recordId], kABPersonFirstNameProperty);
+    return firstName;
+}
+- (ABRecordRef)recordRefFromRecordId:(NSNumber *)recordId{
+    return ABAddressBookGetPersonWithRecordID ( self.addressBookRef, [recordId intValue]);
+}
+- (NSArray *)arrayProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    [self enumerateMultiValueOfProperty:property fromRecord:recordRef
+                              withBlock:^(ABMultiValueRef multiValue, NSUInteger index)
+     {
+         CFTypeRef value = ABMultiValueCopyValueAtIndex(multiValue, index);
+         NSString *string = (__bridge_transfer NSString *)value;
+         if (string)
+         {
+             [array addObject:string];
+         }
+     }];
+    return array.copy;
+}
+- (void)enumerateMultiValueOfProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
+                            withBlock:(void (^)(ABMultiValueRef multiValue, NSUInteger index))block {
+    ABMultiValueRef multiValue = ABRecordCopyValue(recordRef, property);
+    NSUInteger count = (NSUInteger)ABMultiValueGetCount(multiValue);
+    for (NSUInteger i = 0; i < count; i++)
+    {
+        block(multiValue, i);
+    }
+    CFRelease(multiValue);
+}
 
 @end

@@ -15,17 +15,28 @@
 //    DemoTableViewControllerSectionsSectionCount,
 //};
 
-
+// UITableView
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSections) {
     DemoTableViewControllerSectionPresentationType,
     DemoTableViewControllerSectionNumSelectionType,
-    DemoTableViewControllerSectionNumSelectionSlider,
-    DemoTableViewControllerSectionSelectionActionType,
-    DemoTableViewControllerSectionReturnActionType,
+    DemoTableViewControllerSectionActionType,
     DemoTableViewControllerSectionShowButton,
     DemoTableViewControllerSectionCount,
 };
 
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionNumSelectionTypeRows) {
+    DemoTableViewControllerSectionNumSelectionTypeRowSegmentedControl,
+    DemoTableViewControllerSectionNumSelectionTypeRowSlider,
+    DemoTableViewControllerSectionNumSelectionTypeRowCount,
+};
+
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionActionTypeRows) {
+    DemoTableViewControllerSectionActionTypeRowSelection,
+    DemoTableViewControllerSectionActionTypeRowReturn,
+    DemoTableViewControllerSectionActionTypeRowCount,
+};
+
+// UISegmentedControl
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionPresentationTypes) {
     DemoTableViewControllerSectionPresentationTypeNormal,
     DemoTableViewControllerSectionPresentationTypeNav,
@@ -40,17 +51,16 @@ typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionNumSelectionTypes) {
 };
 
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionSelectionActionTypes) {
+    DemoTableViewControllerSectionSelectionActionTypePersonViewController,
     DemoTableViewControllerSectionSelectionActionTypeAlert,
-    DemoTableViewControllerSectionSelectionActionTypeEmail,
     DemoTableViewControllerSectionSelectionActionTypeCount,
 };
 
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionReturnActionTypes) {
+    DemoTableViewControllerSectionReturnActionTypeEmail,
     DemoTableViewControllerSectionReturnActionTypeAlert,
-    DemoTableViewControllerSectionReturnActionTypePersonViewController,
     DemoTableViewControllerSectionReturnActionTypeCount,
 };
-
 
 // seg: nav or not
 // selection type: single, multiple, custom(slider 0(test case)-10)

@@ -97,31 +97,24 @@
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
     if (![parent isEqual:self.parentViewController]) {
-        
         [self invokeReturnDelegate];
-        //        if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingleDidReturn:)]) {
-//            [self.delegate peoplePickerViewControllerTypeSingleDidReturn:self];
-//        }
     }
 }
 
 #pragma mark - Action
-+ (void)presentPeoplePickerViewControllerForParentViewController:(UIViewController *)parentViewController {
++ (instancetype)presentPeoplePickerViewControllerForParentViewController:(UIViewController *)parentViewController {
     UINavigationController *navController = [[UINavigationController alloc] init];
     ZLPeoplePickerViewController *peoplePicker = [[ZLPeoplePickerViewController alloc] init];
     [navController pushViewController:peoplePicker animated:NO];
     peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:peoplePicker action:@selector(doneButtonAction:)];
     peoplePicker.delegate = parentViewController;
     [parentViewController presentViewController:navController animated:YES completion:nil];
+    return peoplePicker;
 }
 
 - (void)doneButtonAction:(id)sender {
-    
-//    NSLog(@"llllozzg");
-
-    [self invokeReturnDelegate];
-
     [self dismissViewControllerAnimated:YES completion:nil];
+    [self invokeReturnDelegate];
 }
 
 - (void)refreshControlAction:(UIRefreshControl *)aRefreshControl {
@@ -283,7 +276,6 @@
         }
     }];
     [self.addressBook startObserveChangesWithCallback:^{
-                  NSLog(@"Address book changed!");
         [weakSelf reloadData];
     }];
 }
@@ -312,8 +304,6 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewController:didReturnWithSelectedPeople:)]) {
         [self.delegate peoplePickerViewController:self didReturnWithSelectedPeople: [self.selectedPeople copy]];
     }
-    
-    NSLog(@"return delegate: %@", self.delegate);
 }
 
 @end

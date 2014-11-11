@@ -64,7 +64,6 @@
             for (int i=0; i<sortedSectionByLastName.count; i++) {
                 APContact * contact = (APContact *)sortedSectionByLastName[i];
                 NSString *lastName = [contact lastNameOrCompositeName];
-                NSLog(@"lastName: %@", lastName);
                 
                 if ([lastName isEqualToString:currentLastName]) {
                     [subSection addObject:contact];
