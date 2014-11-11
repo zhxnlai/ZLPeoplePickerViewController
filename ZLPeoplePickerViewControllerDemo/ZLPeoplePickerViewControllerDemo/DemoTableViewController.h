@@ -8,13 +8,54 @@
 
 #import <UIKit/UIKit.h>
 
+//typedef NS_ENUM(NSInteger, DemoTableViewControllerSections) {
+//    DemoTableViewControllerSectionsSectionPicker,
+//    DemoTableViewControllerSectionsSectionPickerNav,
+//    DemoTableViewControllerSectionsSectionMultiPicker,
+//    DemoTableViewControllerSectionsSectionCount,
+//};
+
+
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSections) {
-    DemoTableViewControllerSectionsSectionPicker,
-    DemoTableViewControllerSectionsSectionPickerNav,
-    DemoTableViewControllerSectionsSectionMultiPicker,
-    DemoTableViewControllerSectionsSectionCount,
-    
+    DemoTableViewControllerSectionPresentationType,
+    DemoTableViewControllerSectionNumSelectionType,
+    DemoTableViewControllerSectionNumSelectionSlider,
+    DemoTableViewControllerSectionSelectionActionType,
+    DemoTableViewControllerSectionReturnActionType,
+    DemoTableViewControllerSectionShowButton,
+    DemoTableViewControllerSectionCount,
 };
+
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionPresentationTypes) {
+    DemoTableViewControllerSectionPresentationTypeNormal,
+    DemoTableViewControllerSectionPresentationTypeNav,
+    DemoTableViewControllerSectionPresentationTypeCount,
+};
+
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionNumSelectionTypes) {
+    DemoTableViewControllerSectionNumSelectionTypeNone,
+    DemoTableViewControllerSectionNumSelectionTypeMax,
+    DemoTableViewControllerSectionNumSelectionTypeCustom,
+    DemoTableViewControllerSectionNumSelectionTypeCount
+};
+
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionSelectionActionTypes) {
+    DemoTableViewControllerSectionSelectionActionTypeAlert,
+    DemoTableViewControllerSectionSelectionActionTypeEmail,
+    DemoTableViewControllerSectionSelectionActionTypeCount,
+};
+
+typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionReturnActionTypes) {
+    DemoTableViewControllerSectionReturnActionTypeAlert,
+    DemoTableViewControllerSectionReturnActionTypePersonViewController,
+    DemoTableViewControllerSectionReturnActionTypeCount,
+};
+
+
+// seg: nav or not
+// selection type: single, multiple, custom(slider 0(test case)-10)
+// alert, msg
+// present
 
 
 

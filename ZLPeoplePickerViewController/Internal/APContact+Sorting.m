@@ -10,12 +10,15 @@
 
 @implementation APContact (Sorting)
 - (NSString *)firstNameOrCompositeName {
-    if (self.firstName) {
-        return self.firstName;
-    } else {
-        return self.compositeName;
-    }
+    if (self.firstName) {return self.firstName;}
+    return self.compositeName;
 }
+
+- (NSString *)lastNameOrCompositeName {
+    if (self.lastName) {return self.lastName;}
+    return self.compositeName;
+}
+
 - (NSArray *)linkedContacts {
 //    NSInteger recordId = [self.recordID intValue];
 //    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID ( ABAddressBookRef addressBook, ABRecordID recordID );

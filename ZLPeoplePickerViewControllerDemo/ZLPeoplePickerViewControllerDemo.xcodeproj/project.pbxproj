@@ -8,16 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		094FA06B1A0C39A700A19F44 /* DemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA06A1A0C39A700A19F44 /* DemoTableViewController.m */; };
-		094FA07C1A0C592F00A19F44 /* APContact+Sorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0711A0C592F00A19F44 /* APContact+Sorting.m */; };
-		094FA07D1A0C592F00A19F44 /* LRIndexedCollationWithSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0731A0C592F00A19F44 /* LRIndexedCollationWithSearch.m */; };
-		094FA07E1A0C592F00A19F44 /* ZLBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0751A0C592F00A19F44 /* ZLBaseTableViewController.m */; };
-		094FA07F1A0C592F00A19F44 /* ZLResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */; };
-		094FA0811A0C592F00A19F44 /* ZLPeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */; };
 		0971D4A61A09B01600325B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0971D4A51A09B01600325B8D /* main.m */; };
 		0971D4A91A09B01600325B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0971D4A81A09B01600325B8D /* AppDelegate.m */; };
 		0971D4B11A09B01600325B8D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0971D4B01A09B01600325B8D /* Images.xcassets */; };
 		0971D4B41A09B01600325B8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0971D4B21A09B01600325B8D /* LaunchScreen.xib */; };
 		0971D4C01A09B01600325B8D /* ZLPeoplePickerViewControllerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0971D4BF1A09B01600325B8D /* ZLPeoplePickerViewControllerDemoTests.m */; };
+		09AF0ADB1A1180EA007805AE /* APContact+Sorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF0AD01A1180EA007805AE /* APContact+Sorting.m */; };
+		09AF0ADC1A1180EA007805AE /* LRIndexedCollationWithSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF0AD21A1180EA007805AE /* LRIndexedCollationWithSearch.m */; };
+		09AF0ADD1A1180EA007805AE /* ZLBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF0AD41A1180EA007805AE /* ZLBaseTableViewController.m */; };
+		09AF0ADE1A1180EA007805AE /* ZLResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF0AD61A1180EA007805AE /* ZLResultsTableViewController.m */; };
+		09AF0AE01A1180EA007805AE /* ZLPeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF0ADA1A1180EA007805AE /* ZLPeoplePickerViewController.m */; };
 		9368C6EAA371E3ACDA194FB1 /* libPods-ZLPeoplePickerViewControllerDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A4FCD87F625E561E254D054 /* libPods-ZLPeoplePickerViewControllerDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -34,16 +34,6 @@
 /* Begin PBXFileReference section */
 		094FA0691A0C39A700A19F44 /* DemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTableViewController.h; sourceTree = "<group>"; };
 		094FA06A1A0C39A700A19F44 /* DemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTableViewController.m; sourceTree = "<group>"; };
-		094FA0701A0C592F00A19F44 /* APContact+Sorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APContact+Sorting.h"; sourceTree = "<group>"; };
-		094FA0711A0C592F00A19F44 /* APContact+Sorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APContact+Sorting.m"; sourceTree = "<group>"; };
-		094FA0721A0C592F00A19F44 /* LRIndexedCollationWithSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRIndexedCollationWithSearch.h; sourceTree = "<group>"; };
-		094FA0731A0C592F00A19F44 /* LRIndexedCollationWithSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRIndexedCollationWithSearch.m; sourceTree = "<group>"; };
-		094FA0741A0C592F00A19F44 /* ZLBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLBaseTableViewController.h; sourceTree = "<group>"; };
-		094FA0751A0C592F00A19F44 /* ZLBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseTableViewController.m; sourceTree = "<group>"; };
-		094FA0761A0C592F00A19F44 /* ZLResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLResultsTableViewController.h; sourceTree = "<group>"; };
-		094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLResultsTableViewController.m; sourceTree = "<group>"; };
-		094FA07A1A0C592F00A19F44 /* ZLPeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPeoplePickerViewController.h; sourceTree = "<group>"; };
-		094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerViewController.m; sourceTree = "<group>"; };
 		0971D4A01A09B01600325B8D /* ZLPeoplePickerViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLPeoplePickerViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0971D4A41A09B01600325B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0971D4A51A09B01600325B8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -54,6 +44,16 @@
 		0971D4B91A09B01600325B8D /* ZLPeoplePickerViewControllerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZLPeoplePickerViewControllerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0971D4BE1A09B01600325B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0971D4BF1A09B01600325B8D /* ZLPeoplePickerViewControllerDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerViewControllerDemoTests.m; sourceTree = "<group>"; };
+		09AF0ACF1A1180EA007805AE /* APContact+Sorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "APContact+Sorting.h"; sourceTree = "<group>"; };
+		09AF0AD01A1180EA007805AE /* APContact+Sorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "APContact+Sorting.m"; sourceTree = "<group>"; };
+		09AF0AD11A1180EA007805AE /* LRIndexedCollationWithSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRIndexedCollationWithSearch.h; sourceTree = "<group>"; };
+		09AF0AD21A1180EA007805AE /* LRIndexedCollationWithSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRIndexedCollationWithSearch.m; sourceTree = "<group>"; };
+		09AF0AD31A1180EA007805AE /* ZLBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLBaseTableViewController.h; sourceTree = "<group>"; };
+		09AF0AD41A1180EA007805AE /* ZLBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseTableViewController.m; sourceTree = "<group>"; };
+		09AF0AD51A1180EA007805AE /* ZLResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLResultsTableViewController.h; sourceTree = "<group>"; };
+		09AF0AD61A1180EA007805AE /* ZLResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLResultsTableViewController.m; sourceTree = "<group>"; };
+		09AF0AD91A1180EA007805AE /* ZLPeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPeoplePickerViewController.h; sourceTree = "<group>"; };
+		09AF0ADA1A1180EA007805AE /* ZLPeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPeoplePickerViewController.m; sourceTree = "<group>"; };
 		16F05380A033F1C8963BECC2 /* Pods-ZLPeoplePickerViewControllerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLPeoplePickerViewControllerDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZLPeoplePickerViewControllerDemo/Pods-ZLPeoplePickerViewControllerDemo.release.xcconfig"; sourceTree = "<group>"; };
 		7A4FCD87F625E561E254D054 /* libPods-ZLPeoplePickerViewControllerDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZLPeoplePickerViewControllerDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E9F2DD6A233D1682F81CCD3 /* Pods-ZLPeoplePickerViewControllerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLPeoplePickerViewControllerDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZLPeoplePickerViewControllerDemo/Pods-ZLPeoplePickerViewControllerDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,40 +78,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		094FA06E1A0C592F00A19F44 /* ZLPeoplePickerViewController */ = {
-			isa = PBXGroup;
-			children = (
-				094FA06F1A0C592F00A19F44 /* Internal */,
-				094FA07A1A0C592F00A19F44 /* ZLPeoplePickerViewController.h */,
-				094FA07B1A0C592F00A19F44 /* ZLPeoplePickerViewController.m */,
-			);
-			name = ZLPeoplePickerViewController;
-			path = ../../ZLPeoplePickerViewController;
-			sourceTree = "<group>";
-		};
-		094FA06F1A0C592F00A19F44 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				094FA0821A0D405500A19F44 /* Categories */,
-				094FA0721A0C592F00A19F44 /* LRIndexedCollationWithSearch.h */,
-				094FA0731A0C592F00A19F44 /* LRIndexedCollationWithSearch.m */,
-				094FA0741A0C592F00A19F44 /* ZLBaseTableViewController.h */,
-				094FA0751A0C592F00A19F44 /* ZLBaseTableViewController.m */,
-				094FA0761A0C592F00A19F44 /* ZLResultsTableViewController.h */,
-				094FA0771A0C592F00A19F44 /* ZLResultsTableViewController.m */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		094FA0821A0D405500A19F44 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				094FA0701A0C592F00A19F44 /* APContact+Sorting.h */,
-				094FA0711A0C592F00A19F44 /* APContact+Sorting.m */,
-			);
-			name = Categories;
-			sourceTree = "<group>";
-		};
 		0971D4971A09B01600325B8D = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +101,7 @@
 		0971D4A21A09B01600325B8D /* ZLPeoplePickerViewControllerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				094FA06E1A0C592F00A19F44 /* ZLPeoplePickerViewController */,
+				09AF0ACD1A1180EA007805AE /* ZLPeoplePickerViewController */,
 				0971D4A71A09B01600325B8D /* AppDelegate.h */,
 				0971D4A81A09B01600325B8D /* AppDelegate.m */,
 				094FA0691A0C39A700A19F44 /* DemoTableViewController.h */,
@@ -171,6 +137,32 @@
 				0971D4BE1A09B01600325B8D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		09AF0ACD1A1180EA007805AE /* ZLPeoplePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				09AF0ACE1A1180EA007805AE /* Internal */,
+				09AF0AD91A1180EA007805AE /* ZLPeoplePickerViewController.h */,
+				09AF0ADA1A1180EA007805AE /* ZLPeoplePickerViewController.m */,
+			);
+			name = ZLPeoplePickerViewController;
+			path = ../../ZLPeoplePickerViewController;
+			sourceTree = "<group>";
+		};
+		09AF0ACE1A1180EA007805AE /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				09AF0ACF1A1180EA007805AE /* APContact+Sorting.h */,
+				09AF0AD01A1180EA007805AE /* APContact+Sorting.m */,
+				09AF0AD11A1180EA007805AE /* LRIndexedCollationWithSearch.h */,
+				09AF0AD21A1180EA007805AE /* LRIndexedCollationWithSearch.m */,
+				09AF0AD31A1180EA007805AE /* ZLBaseTableViewController.h */,
+				09AF0AD41A1180EA007805AE /* ZLBaseTableViewController.m */,
+				09AF0AD51A1180EA007805AE /* ZLResultsTableViewController.h */,
+				09AF0AD61A1180EA007805AE /* ZLResultsTableViewController.m */,
+			);
+			path = Internal;
 			sourceTree = "<group>";
 		};
 		0D4B11041DA95E11C15BBB66 /* Pods */ = {
@@ -324,14 +316,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				094FA07E1A0C592F00A19F44 /* ZLBaseTableViewController.m in Sources */,
-				094FA07F1A0C592F00A19F44 /* ZLResultsTableViewController.m in Sources */,
-				094FA07C1A0C592F00A19F44 /* APContact+Sorting.m in Sources */,
-				094FA0811A0C592F00A19F44 /* ZLPeoplePickerViewController.m in Sources */,
+				09AF0ADD1A1180EA007805AE /* ZLBaseTableViewController.m in Sources */,
+				09AF0ADE1A1180EA007805AE /* ZLResultsTableViewController.m in Sources */,
+				09AF0ADB1A1180EA007805AE /* APContact+Sorting.m in Sources */,
+				09AF0AE01A1180EA007805AE /* ZLPeoplePickerViewController.m in Sources */,
 				0971D4A91A09B01600325B8D /* AppDelegate.m in Sources */,
 				0971D4A61A09B01600325B8D /* main.m in Sources */,
 				094FA06B1A0C39A700A19F44 /* DemoTableViewController.m in Sources */,
-				094FA07D1A0C592F00A19F44 /* LRIndexedCollationWithSearch.m in Sources */,
+				09AF0ADC1A1180EA007805AE /* LRIndexedCollationWithSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

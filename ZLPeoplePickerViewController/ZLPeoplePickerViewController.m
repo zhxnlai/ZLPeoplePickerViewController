@@ -31,17 +31,19 @@
 @end
 
 @implementation ZLPeoplePickerViewController
-- (instancetype)initWithType:(ZLPeoplePickerViewControllerType)type {
-    self = [super initWithStyle:UITableViewStylePlain];
+
+- (instancetype)init {
+    self = [super init];
     if (self) {
         [self setup];
-        _type = type;
     }
     return self;
 }
 
 - (void)setup {
     self.addressBook = [[APAddressBook alloc] init];
+    _numberOfSelectedPeople = ZLNumSelectionNone;
+    _filedMask = ZLContactFieldDefault;
 }
 
 - (void)viewDidLoad {
@@ -93,18 +95,20 @@
     }
 }
 
-//- (void)didMoveToParentViewController:(UIViewController *)parent {
-//    if (![parent isEqual:self.parentViewController]) {
-//        if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingleDidReturn:)]) {
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    if (![parent isEqual:self.parentViewController]) {
+        
+        [self invokeReturnDelegate];
+        //        if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingleDidReturn:)]) {
 //            [self.delegate peoplePickerViewControllerTypeSingleDidReturn:self];
 //        }
-//    }
-//}
+    }
+}
 
 #pragma mark - Action
-+ (void)presentPeoplePickerViewControllerWithType:(ZLPeoplePickerViewControllerType)type forParentViewController:(UIViewController *)parentViewController {
++ (void)presentPeoplePickerViewControllerForParentViewController:(UIViewController *)parentViewController {
     UINavigationController *navController = [[UINavigationController alloc] init];
-    ZLPeoplePickerViewController *peoplePicker = [[ZLPeoplePickerViewController alloc] initWithType:type];
+    ZLPeoplePickerViewController *peoplePicker = [[ZLPeoplePickerViewController alloc] init];
     [navController pushViewController:peoplePicker animated:NO];
     peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:peoplePicker action:@selector(doneButtonAction:)];
     peoplePicker.delegate = parentViewController;
@@ -112,9 +116,10 @@
 }
 
 - (void)doneButtonAction:(id)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeMultiple:didReturnWithSelectedPeople:)]) {
-        [self.delegate peoplePickerViewControllerTypeMultiple:self didReturnWithSelectedPeople: [self.selectedPeople copy]];
-    }
+    
+//    NSLog(@"llllozzg");
+
+    [self invokeReturnDelegate];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -163,14 +168,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewControllerTypeSingle:didSelectPerson:)]) {
-        [self.delegate peoplePickerViewControllerTypeSingle:self didSelectPerson:contact.recordID];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewController:didSelectPerson:)]) {
+        [self.delegate peoplePickerViewController:self didSelectPerson:contact.recordID];
     }
     
-    if (self.type == ZLPeoplePickerViewControllerTypeMultiple) {
-        if ([self.selectedPeople containsObject:contact.recordID]) {
-            [self.selectedPeople removeObject:contact.recordID];
-        } else {
+    if ([self.selectedPeople containsObject:contact.recordID]) {
+        [self.selectedPeople removeObject:contact.recordID];
+    } else {
+        if (self.selectedPeople.count<self.numberOfSelectedPeople) {
             [self.selectedPeople addObject:contact.recordID];
         }
     }
@@ -260,8 +265,7 @@
 - (void)loadContacts:(void (^)(BOOL succeeded, NSError *error))completionBlock {
     __weak __typeof(self) weakSelf = self;
     self.addressBook.fieldsMask = APContactFieldFirstName | APContactFieldLastName | APContactFieldCompositeName | APContactFieldPhones | APContactFieldThumbnail |APContactFieldRecordID |APContactFieldEmails |APContactFieldAddresses;
-    self.addressBook.filterBlock = ^BOOL(APContact *contact)
-    {
+    self.addressBook.filterBlock = ^BOOL(APContact *contact) {
         return contact.phones.count > 0 && contact.compositeName != nil;
     };
     [self.addressBook loadContacts:^(NSArray *contacts, NSError *error) {
@@ -301,6 +305,15 @@
 - (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
 {
     [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - ()
+- (void)invokeReturnDelegate {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(peoplePickerViewController:didReturnWithSelectedPeople:)]) {
+        [self.delegate peoplePickerViewController:self didReturnWithSelectedPeople: [self.selectedPeople copy]];
+    }
+    
+    NSLog(@"return delegate: %@", self.delegate);
 }
 
 @end

@@ -27,33 +27,47 @@
 }
 
 #pragma mark - ZLPeoplePickerViewControllerDelegate
-- (void)peoplePickerViewControllerTypeSingle:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId {
-    if (peoplePicker.type==ZLPeoplePickerViewControllerTypeSingle) {
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId {
+    if (peoplePicker.numberOfSelectedPeople==ZLNumSelectionNone) {
+        
         [self showPersonViewController:[recordId intValue]];
     }
 }
-- (void)peoplePickerViewControllerTypeMultiple:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people {
-    if (peoplePicker.type==ZLPeoplePickerViewControllerTypeMultiple) {
-        // send multiple emails
-    }
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people {
+    
+        NSLog(@"llllog");
+    
+    
+    NSLog(@"llllogl");
+
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return DemoTableViewControllerSectionsSectionCount;
+    return DemoTableViewControllerSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case DemoTableViewControllerSectionsSectionPicker:
+        case DemoTableViewControllerSectionPresentationType:
+            return DemoTableViewControllerSectionPresentationTypeCount;
+            break;
+        case DemoTableViewControllerSectionNumSelectionType:
+            return DemoTableViewControllerSectionNumSelectionTypeCount;
+            break;
+        case DemoTableViewControllerSectionNumSelectionSlider:
             return 1;
             break;
-        case DemoTableViewControllerSectionsSectionPickerNav:
+        case DemoTableViewControllerSectionSelectionActionType:
+            return DemoTableViewControllerSectionSelectionActionTypeCount;
+            break;
+        case DemoTableViewControllerSectionReturnActionType:
+            return DemoTableViewControllerSectionReturnActionTypeCount;
+            break;
+        case DemoTableViewControllerSectionShowButton:
             return 1;
             break;
-        case DemoTableViewControllerSectionsSectionMultiPicker:
-            return 1;
         default:
             break;
     }
@@ -66,14 +80,24 @@
     if (!cell) {cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];}
 
     switch (indexPath.section) {
-        case DemoTableViewControllerSectionsSectionPicker:
-            cell.textLabel.text = @"People Picker";
+        case DemoTableViewControllerSectionPresentationType:
+            ;
             break;
-        case DemoTableViewControllerSectionsSectionPickerNav:
-            cell.textLabel.text = @"People Picker Navigation";
+        case DemoTableViewControllerSectionNumSelectionType:
+
             break;
-        case DemoTableViewControllerSectionsSectionMultiPicker:
-            cell.textLabel.text = @"Multiple Picker";
+        case DemoTableViewControllerSectionNumSelectionSlider:
+//            return 1;
+            break;
+        case DemoTableViewControllerSectionSelectionActionType:
+
+            break;
+        case DemoTableViewControllerSectionReturnActionType:
+            ;
+            break;
+        case DemoTableViewControllerSectionShowButton:
+
+            break;
         default:
             break;
     }
@@ -83,30 +107,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    switch (indexPath.section) {
-        case DemoTableViewControllerSectionsSectionPicker:
-        {
-            ZLPeoplePickerViewController *peoplePVC = [[ZLPeoplePickerViewController alloc] initWithType:ZLPeoplePickerViewControllerTypeSingle];
-            peoplePVC.delegate = self;
-            [self.navigationController pushViewController:peoplePVC animated:YES];
-        }
-            break;
-        case DemoTableViewControllerSectionsSectionPickerNav:
-        {
-//            ZLPeoplePickerNavigationViewController *peoplePVCNav = [[ZLPeoplePickerNavigationViewController alloc] init];
-//            [self.navigationController presentViewController:peoplePVCNav animated:YES completion:nil];
-            [ZLPeoplePickerViewController presentPeoplePickerViewControllerWithType:ZLPeoplePickerViewControllerTypeSingle forParentViewController:self];
-        }
-            break;
-        case DemoTableViewControllerSectionsSectionMultiPicker:
-        {
-            [ZLPeoplePickerViewController presentPeoplePickerViewControllerWithType:ZLPeoplePickerViewControllerTypeMultiple forParentViewController:self];
-
-        }
-            break;
-        default:
-            break;
-    }
+//    switch (indexPath.section) {
+//        case DemoTableViewControllerSectionsSectionPicker:
+//        {
+//            ZLPeoplePickerViewController *peoplePVC = [[ZLPeoplePickerViewController alloc] init];
+//            peoplePVC.delegate = self;
+//            [self.navigationController pushViewController:peoplePVC animated:YES];
+//        }
+//            break;
+//        case DemoTableViewControllerSectionsSectionPickerNav:
+//        {
+////            ZLPeoplePickerNavigationViewController *peoplePVCNav = [[ZLPeoplePickerNavigationViewController alloc] init];
+////            [self.navigationController presentViewController:peoplePVCNav animated:YES completion:nil];
+//            [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
+//        }
+//            break;
+//        case DemoTableViewControllerSectionsSectionMultiPicker:
+//        {
+//            [ZLPeoplePickerViewController presentPeoplePickerViewControllerForParentViewController:self];
+//
+//        }
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 #pragma mark Display and edit a person
@@ -151,8 +175,7 @@
 #pragma mark ABPersonViewControllerDelegate methods
 // Does not allow users to perform default actions such as dialing a phone number, when they select a contact property.
 - (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person
-                    property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
-{
+                    property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue {
     return NO;
 }
 
