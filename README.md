@@ -1,7 +1,7 @@
 ZLPeoplePickerViewController
 ============================
 
-A drop-in contact picker that supports UILocalized​Indexed​Collation
+A replacement for ABPeoplePickerNavigationController that supports UILocalized​Indexed​Collation
 
 Preview
 ---
