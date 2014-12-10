@@ -17,7 +17,8 @@
 
 + (id)currentCollation;
 {
-    UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+    UILocalizedIndexedCollation *collation =
+        [UILocalizedIndexedCollation currentCollation];
     return [[self alloc] initWithCollation:collation];
 }
 
@@ -31,36 +32,35 @@
 
 #pragma mark -
 
-- (NSInteger)sectionForObject:(id)object collationStringSelector:(SEL)selector
-{
-    return [_collation sectionForObject:object collationStringSelector:selector];
+- (NSInteger)sectionForObject:(id)object collationStringSelector:(SEL)selector {
+    return
+        [_collation sectionForObject:object collationStringSelector:selector];
 }
 
-- (NSInteger)sectionForSectionIndexTitleAtIndex:(NSInteger)indexTitleIndex
-{
-    if(indexTitleIndex == 0) {
+- (NSInteger)sectionForSectionIndexTitleAtIndex:(NSInteger)indexTitleIndex {
+    if (indexTitleIndex == 0) {
 
         return NSNotFound;
     }
-    return [_collation sectionForSectionIndexTitleAtIndex:indexTitleIndex-1];
+    return [_collation sectionForSectionIndexTitleAtIndex:indexTitleIndex - 1];
 }
 
-- (NSArray *)sortedArrayFromArray:(NSArray *)array collationStringSelector:(SEL)selector
-{
-    return [_collation sortedArrayFromArray:array collationStringSelector:selector];
+- (NSArray *)sortedArrayFromArray:(NSArray *)array
+          collationStringSelector:(SEL)selector {
+    return [_collation sortedArrayFromArray:array
+                    collationStringSelector:selector];
 }
 
 #pragma mark -
 #pragma mark Accessors
 
 - (NSArray *)sectionTitles;
-{
-    return [_collation sectionTitles];
-}
+{ return [_collation sectionTitles]; }
 
 - (NSArray *)sectionIndexTitles;
 {
-    return [[NSArray arrayWithObject:UITableViewIndexSearch] arrayByAddingObjectsFromArray:[_collation sectionIndexTitles]];
+    return [[NSArray arrayWithObject:UITableViewIndexSearch]
+        arrayByAddingObjectsFromArray:[_collation sectionIndexTitles]];
 }
 
 @end

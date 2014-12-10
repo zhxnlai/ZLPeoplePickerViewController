@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const ZLAddressBookDidChangeNotification;
+extern NSString *const ZLAddressBookDidChangeNotification;
 
 @interface ZLAddressBook : NSObject
 @property (strong, nonatomic, readonly) NSArray *contacts;

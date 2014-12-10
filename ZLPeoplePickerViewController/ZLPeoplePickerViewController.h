@@ -19,15 +19,18 @@
  *  @param peoplePicker The people picker object providing this information.
  *  @param recordId     The person's recordId in ABAddressBook
  */
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didSelectPerson:(NSNumber *)recordId;
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
+                   didSelectPerson:(NSNumber *)recordId;
 
 /**
- *  Tells the delegate that the people picker has returned and, if the type is multiple, selected contacts.
+ *  Tells the delegate that the people picker has returned and, if the type is
+ *multiple, selected contacts.
  *
  *  @param peoplePicker The people picker object providing this information.
  *  @param people     An array of recordIds
  */
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker didReturnWithSelectedPeople:(NSArray *)people;
+- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
+       didReturnWithSelectedPeople:(NSArray *)people;
 
 @end
 
@@ -36,8 +39,10 @@
 @property (nonatomic) ZLNumSelection numberOfSelectedPeople;
 
 + (void)initializeAddressBook;
-//- (id)init __attribute__((unavailable("-init is not allowed, use -initWithType: instead")));
-- (id)initWithStyle:(UITableViewStyle)style __attribute__((unavailable("-initWithStyle is not allowed, use -init instead")));
-+ (instancetype)presentPeoplePickerViewControllerForParentViewController:(UIViewController *)parentViewController;
+//- (id)init __attribute__((unavailable("-init is not allowed, use
+//-initWithType: instead")));
+- (id)initWithStyle:(UITableViewStyle)style __attribute__((unavailable(
+                        "-initWithStyle is not allowed, use -init instead")));
++ (instancetype)presentPeoplePickerViewControllerForParentViewController:
+        (UIViewController *)parentViewController;
 @end
-

@@ -11,7 +11,7 @@
 
 @class APContact;
 
-static NSString * const kCellIdentifier = @"cellID";
+static NSString *const kCellIdentifier = @"cellID";
 
 @interface ZLBaseTableViewController : UITableViewController
 
@@ -23,6 +23,6 @@ static NSString * const kCellIdentifier = @"cellID";
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts;
 - (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)product;
 - (BOOL)shouldEnableCellforContact:(APContact *)contact;
-- (APContact *)contactForRowAtIndexPath:(NSIndexPath*)indexPath;
+- (APContact *)contactForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

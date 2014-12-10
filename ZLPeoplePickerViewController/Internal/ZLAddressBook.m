@@ -10,7 +10,8 @@
 #import "APAddressBook.h"
 #import "APContact.h"
 
-NSString * const ZLAddressBookDidChangeNotification = @"ZLAddressBookDidChangeNotification";
+NSString *const ZLAddressBookDidChangeNotification =
+    @"ZLAddressBookDidChangeNotification";
 
 @interface ZLAddressBook ()
 @property (strong, nonatomic) APAddressBook *addressBook;
@@ -21,9 +22,7 @@ NSString * const ZLAddressBookDidChangeNotification = @"ZLAddressBookDidChangeNo
 + (instancetype)sharedInstance {
     static dispatch_once_t pred = 0;
     __strong static id _sharedObject = nil;
-    dispatch_once(&pred, ^{
-        _sharedObject = [[self alloc] init];
-    });
+    dispatch_once(&pred, ^{ _sharedObject = [[self alloc] init]; });
     return _sharedObject;
 }
 
@@ -43,29 +42,32 @@ NSString * const ZLAddressBookDidChangeNotification = @"ZLAddressBookDidChangeNo
 
 - (void)loadContacts:(void (^)(BOOL succeeded, NSError *error))completionBlock {
     __weak __typeof(self) weakSelf = self;
-    self.addressBook.fieldsMask = APContactFieldFirstName | APContactFieldLastName | APContactFieldCompositeName | APContactFieldPhones | APContactFieldThumbnail |APContactFieldRecordID |APContactFieldEmails |APContactFieldAddresses;
+    self.addressBook.fieldsMask =
+        APContactFieldFirstName | APContactFieldLastName |
+        APContactFieldCompositeName | APContactFieldPhones |
+        APContactFieldThumbnail | APContactFieldRecordID |
+        APContactFieldEmails | APContactFieldAddresses;
     self.addressBook.filterBlock = ^BOOL(APContact *contact) {
         return contact.phones.count > 0 && contact.compositeName != nil;
     };
     [self.addressBook loadContacts:^(NSArray *contacts, NSError *error) {
-        if (!error)
-        {
+        if (!error) {
             weakSelf.contacts = contacts;
             if (completionBlock) {
-                completionBlock(YES,nil);
+                completionBlock(YES, nil);
             }
-        }
-        else {
+        } else {
             if (completionBlock) {
-                completionBlock(NO,error);
+                completionBlock(NO, error);
             }
         }
     }];
     [self.addressBook startObserveChangesWithCallback:^{
-//        [weakSelf reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ZLAddressBookDidChangeNotification object:nil ];
+        //        [weakSelf reloadData];
+        [[NSNotificationCenter defaultCenter]
+            postNotificationName:ZLAddressBookDidChangeNotification
+                          object:nil];
     }];
 }
-
 
 @end
