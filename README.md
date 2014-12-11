@@ -2,6 +2,15 @@ ZLPeoplePickerViewController
 ============================
 A replacement for ABPeoplePickerNavigationController that supports UILocalized​Indexed​Collation. ZLPeoplePickerViewController was originally created for [Talkly](http://zhxnlai.github.io/#/talkly).
 
+Why?
+---
+ABPeoplePickerNavigationController does not work well with contact names of multiple languages, neither does some address book based apps that worths $16 billion. Here are some examples:
+<image style="width:45%;" src="Previews/phoneapp.png"></image>
+<image style="width:45%;" src="Previews/whatsapp.png"></image>
+
+And this is how it should have been:
+<image style="width:45%;" src="Previews/ourapp.png"></image>
+
 Preview
 ---
 ###Present ABPersonViewController on select
