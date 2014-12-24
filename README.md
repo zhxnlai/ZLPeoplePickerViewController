@@ -4,7 +4,7 @@ A replacement for ABPeoplePickerNavigationController that supports UILocalizedâ€
 
 Why?
 ---
-ABPeoplePickerNavigationController does not work well with contact names of multiple languages, neither does some address book based apps that worths $16 billion. Here are some examples:
+ABPeoplePickerNavigationController does not work well with contact names of multiple languages, neither does some address book based app that worths $16 billion. Here are some examples:
 
 <img width="320 px" src="Previews/phoneapp.png"/>
 <img width="320 px" src="Previews/whatsapp.png"></img>
