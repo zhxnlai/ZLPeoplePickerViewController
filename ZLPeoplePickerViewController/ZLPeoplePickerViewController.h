@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AddressBook/AddressBook.h>
 #import "ZLBaseTableViewController.h"
 
 @class ZLPeoplePickerViewController;
@@ -31,6 +32,15 @@
  */
 - (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
        didReturnWithSelectedPeople:(NSArray *)people;
+
+/**
+ *  Tells the delegate that the people picker's ABNewPersonViewController did complete
+ *  with a new person (can be NULL)
+ *
+ *  @param person     A valid person that was saved into the Address Book, otherwise NULL
+ */
+
+-(void)newPersonViewControllerDidCompleteWithNewPerson:(nullable ABRecordRef)person;
 
 @end
 
