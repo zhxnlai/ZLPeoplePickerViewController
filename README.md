@@ -78,6 +78,9 @@ ZLPeoplePickerViewController can have an optional delegate to receive callback.
   if (!people || people.count==0) {return;}
   [self presentViewController: [self alertControllerWithTitle:@"Return with selected people:" Message:[[self firstNameForPeople:people] componentsJoinedByString:@", "]] animated:YES completion:nil];
 }
+- (void)newPersonViewControllerDidCompleteWithNewPerson:(nullable ABRecordRef)person {
+    NSLog(@"Added a new person");
+}
 ~~~
 
 Dependencies

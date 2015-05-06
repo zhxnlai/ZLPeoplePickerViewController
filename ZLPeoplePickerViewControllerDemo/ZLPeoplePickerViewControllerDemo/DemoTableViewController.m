@@ -112,7 +112,10 @@ static int numSelectionSliderMaxValue = 10;
                        completion:nil];
     }
 }
-
+- (void)newPersonViewControllerDidCompleteWithNewPerson:
+        (nullable ABRecordRef)person {
+    NSLog(@"Added a new person");
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -289,7 +292,7 @@ static int numSelectionSliderMaxValue = 10;
         UIAlertView *alert =
             [[UIAlertView alloc] initWithTitle:@"Error"
                                        message:@"Could not find the person in "
-                                               @"the Contacts application"
+                                       @"the Contacts application"
                                       delegate:nil
                              cancelButtonTitle:@"Cancel"
                              otherButtonTitles:nil];
@@ -316,8 +319,7 @@ static int numSelectionSliderMaxValue = 10;
     [picker setToRecipients:recipients];
     [picker setSubject:@"Check Out ZLPeoplePickerViewController!"];
     NSString *emailBody = @"Check Out ZLPeoplePickerViewController at "
-                          @"https://github.com/zhxnlai/"
-                          @"ZLPeoplePickerViewController";
+        @"https://github.com/zhxnlai/" @"ZLPeoplePickerViewController";
     [picker setMessageBody:emailBody isHTML:NO];
 
     [self presentViewController:picker animated:YES completion:NULL];
@@ -386,7 +388,7 @@ static int numSelectionSliderMaxValue = 10;
         actionWithTitle:@"OK"
                   style:UIAlertActionStyleDefault
                 handler:^(UIAlertAction *action) {
-                    [alert dismissViewControllerAnimated:YES completion:nil];
+                  [alert dismissViewControllerAnimated:YES completion:nil];
                 }];
     [alert addAction:ok];
     return alert;
@@ -428,14 +430,13 @@ static int numSelectionSliderMaxValue = 10;
                              fromRecord:recordRef
                               withBlock:^(ABMultiValueRef multiValue,
                                           NSUInteger index) {
-                                  CFTypeRef value =
-                                      ABMultiValueCopyValueAtIndex(multiValue,
-                                                                   index);
-                                  NSString *string =
-                                      (__bridge_transfer NSString *)value;
-                                  if (string) {
-                                      [array addObject:string];
-                                  }
+                                CFTypeRef value = ABMultiValueCopyValueAtIndex(
+                                    multiValue, index);
+                                NSString *string =
+                                    (__bridge_transfer NSString *)value;
+                                if (string) {
+                                    [array addObject:string];
+                                }
                               }];
     return array.copy;
 }
