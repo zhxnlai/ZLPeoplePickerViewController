@@ -362,6 +362,11 @@
             (ABNewPersonViewController *)newPersonViewController
        didCompleteWithNewPerson:(ABRecordRef)person {
     [self dismissViewControllerAnimated:YES completion:NULL];
+    if (self.delegate &&
+        [self.delegate
+         respondsToSelector:@selector(newPersonViewControllerDidCompleteWithNewPerson:)]) {
+            [self.delegate newPersonViewControllerDidCompleteWithNewPerson:person];
+         }
 }
 
 #pragma mark - ()
