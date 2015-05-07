@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionNumSelectionTypes) {
 };
 
 typedef NS_ENUM(NSInteger, DemoTableViewControllerSectionFieldMaskTypes) {
+    DemoTableViewControllerSectionFieldMaskTypeAll,
     DemoTableViewControllerSectionFieldMaskTypePhones,
     DemoTableViewControllerSectionFieldMaskTypeEmails,
     DemoTableViewControllerSectionFieldMaskTypePhoto,

@@ -48,7 +48,7 @@ NSString *const ZLAddressBookDidChangeNotification =
         APContactFieldThumbnail | APContactFieldRecordID |
         APContactFieldEmails | APContactFieldAddresses;
     self.addressBook.filterBlock = ^BOOL(APContact *contact) {
-        return contact.phones.count > 0 && contact.compositeName != nil;
+        return contact.compositeName != nil;
     };
     [self.addressBook loadContacts:^(NSArray *contacts, NSError *error) {
         if (!error) {

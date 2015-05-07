@@ -189,7 +189,7 @@ static int numSelectionSliderMaxValue = 10;
     case DemoTableViewControllerSectionFieldMaskType: {
         cell.textLabel.text = @"FieldMask";
         UISegmentedControl *control = [[UISegmentedControl alloc]
-            initWithItems:@[ @"Phones", @"Emails", @"Photo" ]];
+            initWithItems:@[ @"All", @"Phones", @"Emails", @"Photo" ]];
         control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         control.selectedSegmentIndex = 0;
         cell.accessoryView = control;
@@ -250,6 +250,9 @@ static int numSelectionSliderMaxValue = 10;
     }
 
     if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
+        DemoTableViewControllerSectionFieldMaskTypeAll) {
+        self.peoplePicker.filedMask = ZLContactFieldAll;
+    } else if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
         DemoTableViewControllerSectionFieldMaskTypePhones) {
         self.peoplePicker.filedMask = ZLContactFieldPhones;
     } else if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
