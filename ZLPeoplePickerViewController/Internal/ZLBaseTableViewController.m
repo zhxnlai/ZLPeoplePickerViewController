@@ -195,6 +195,10 @@
 }
 
 - (BOOL)shouldEnableCellforContact:(APContact *)contact {
+    if(self.filedMask == ZLContactFieldAll) {
+        return YES;
+    }
+    else {
     return ((self.filedMask & ZLContactFieldPhones) &&
             contact.phones.count > 0) ||
            ((self.filedMask & ZLContactFieldEmails) &&
@@ -202,6 +206,7 @@
            ((self.filedMask & ZLContactFieldPhoto) && contact.thumbnail) ||
            ((self.filedMask & ZLContactFieldAddresses) &&
             contact.addresses.count > 0);
+    }
 }
 
 - (APContact *)contactForRowAtIndexPath:(NSIndexPath *)indexPath {
