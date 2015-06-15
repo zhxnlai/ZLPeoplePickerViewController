@@ -43,6 +43,7 @@
 - (void)setup {
     _numberOfSelectedPeople = ZLNumSelectionNone;
     self.filedMask = ZLContactFieldDefault;
+    self.allowAddPeople = YES;
 }
 
 + (void)initializeAddressBook {
@@ -83,18 +84,20 @@
     [self.refreshControl addTarget:self
                             action:@selector(refreshControlAction:)
                   forControlEvents:UIControlEventValueChanged];
+    [self refreshControlAction:self.refreshControl];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
 
-    self.navigationItem.title = @"Contacts";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                             target:self
-                             action:@selector(showNewPersonViewController)];
-
-    [self refreshControlAction:self.refreshControl];
-
+    self.navigationItem.title = self.title.length > 0 ? self.title : NSLocalizedString(@"Contacts", nil);
+    
+    if (self.allowAddPeople) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                  target:self
+                                                  action:@selector(showNewPersonViewController)];
+    }
+    
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(addressBookDidChangeNotification:)
