@@ -16,8 +16,7 @@
 #import "APContact+Sorting.h"
 
 @interface ZLPeoplePickerViewController () <
-    ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
-    ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
+    ABPeoplePickerNavigationControllerDelegate, ABNewPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -31,6 +30,7 @@
 @end
 
 @implementation ZLPeoplePickerViewController
+@dynamic refreshControl;    // getter and setter methods implemened by the superclass
 
 - (instancetype)init {
     self = [super init];
@@ -145,7 +145,7 @@
         initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                              target:peoplePicker
                              action:@selector(doneButtonAction:)];
-    peoplePicker.delegate = parentViewController;
+    peoplePicker.delegate = (id<ZLPeoplePickerViewControllerDelegate>)parentViewController;
     [parentViewController presentViewController:navController
                                        animated:YES
                                      completion:nil];
@@ -242,6 +242,18 @@
     } else {
         if (self.selectedPeople.count < self.numberOfSelectedPeople) {
             [self.selectedPeople addObject:contact.recordID];
+        } else {
+            if(self.numberOfSelectedPeople == 1) {
+                if (![tableView isEqual:self.tableView]) {
+                    ZLResultsTableViewController *tableController =
+                        (ZLResultsTableViewController *)
+                        self.searchController.searchResultsController;
+                    tableController.selectedPeople = nil;
+                    [tableController.selectedPeople addObject:contact.recordID];
+                }
+                self.selectedPeople = nil;
+                [self.selectedPeople addObject:contact.recordID];
+            }
         }
     }
 
@@ -364,12 +376,27 @@
 - (void)newPersonViewController:
             (ABNewPersonViewController *)newPersonViewController
        didCompleteWithNewPerson:(ABRecordRef)person {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+
     if (self.delegate &&
         [self.delegate
          respondsToSelector:@selector(newPersonViewControllerDidCompleteWithNewPerson:)]) {
             [self.delegate newPersonViewControllerDidCompleteWithNewPerson:person];
          }
+    
+    if(self.numberOfSelectedPeople == 1) {
+        if(person) {
+            self.selectedPeople = nil;
+            [self.selectedPeople addObject:[NSNumber numberWithInt:ABRecordGetRecordID(person)]];
+            [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+            [self invokeReturnDelegate];
+        }
+        else {
+            [self dismissViewControllerAnimated:YES completion:NULL];
+        }
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 #pragma mark - ()
@@ -379,7 +406,7 @@
             respondsToSelector:@selector(peoplePickerViewController:
                                         didReturnWithSelectedPeople:)]) {
         [self.delegate peoplePickerViewController:self
-                      didReturnWithSelectedPeople:[self.selectedPeople copy]];
+                      didReturnWithSelectedPeople:[self.selectedPeople allObjects]];
     }
 }
 

@@ -156,6 +156,8 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
         // cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
     [self configureCell:cell forContact:contact];

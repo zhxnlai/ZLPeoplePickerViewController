@@ -20,8 +20,8 @@
  *  @param peoplePicker The people picker object providing this information.
  *  @param recordId     The person's recordId in ABAddressBook
  */
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
-                   didSelectPerson:(NSNumber *)recordId;
+- (void)peoplePickerViewController:(nonnull ZLPeoplePickerViewController *)peoplePicker
+                   didSelectPerson:(nonnull NSNumber *)recordId;
 
 /**
  *  Tells the delegate that the people picker has returned and, if the type is
@@ -30,8 +30,8 @@
  *  @param peoplePicker The people picker object providing this information.
  *  @param people     An array of recordIds
  */
-- (void)peoplePickerViewController:(ZLPeoplePickerViewController *)peoplePicker
-       didReturnWithSelectedPeople:(NSArray *)people;
+- (void)peoplePickerViewController:(nonnull ZLPeoplePickerViewController *)peoplePicker
+       didReturnWithSelectedPeople:(nullable NSArray *)people;
 
 /**
  *  Tells the delegate that the people picker's ABNewPersonViewController did complete
@@ -45,7 +45,7 @@
 @end
 
 @interface ZLPeoplePickerViewController : ZLBaseTableViewController
-@property (weak, nonatomic) id<ZLPeoplePickerViewControllerDelegate> delegate;
+@property (weak, nonatomic, nullable) id<ZLPeoplePickerViewControllerDelegate> delegate;
 @property (nonatomic) ZLNumSelection numberOfSelectedPeople;
 @property (nonatomic, assign) BOOL allowAddPeople;
 
