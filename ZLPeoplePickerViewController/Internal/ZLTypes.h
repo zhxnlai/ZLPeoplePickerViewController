@@ -11,6 +11,7 @@
 
 typedef NS_ENUM(NSUInteger, ZLNumSelection) {
     ZLNumSelectionNone = 0,
+    ZLNumSelectionOne = 1,
     ZLNumSelectionMax = NSUIntegerMax
 };
 

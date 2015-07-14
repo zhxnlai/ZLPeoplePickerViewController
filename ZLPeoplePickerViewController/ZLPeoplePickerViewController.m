@@ -387,6 +387,9 @@
             [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
             [self invokeReturnDelegate];
         }
+        else {
+            [self dismissViewControllerAnimated:YES completion:NULL];
+        }
     }
     else {
         [self dismissViewControllerAnimated:YES completion:NULL];
@@ -400,7 +403,7 @@
             respondsToSelector:@selector(peoplePickerViewController:
                                         didReturnWithSelectedPeople:)]) {
         [self.delegate peoplePickerViewController:self
-                      didReturnWithSelectedPeople:[self.selectedPeople copy]];
+                      didReturnWithSelectedPeople:[self.selectedPeople allObjects]];
     }
 }
 
