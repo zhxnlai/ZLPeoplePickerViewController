@@ -28,10 +28,10 @@
  *multiple, selected contacts.
  *
  *  @param peoplePicker The people picker object providing this information.
- *  @param people     An array of recordIds
+ *  @param people     An set of recordIds
  */
 - (void)peoplePickerViewController:(nonnull ZLPeoplePickerViewController *)peoplePicker
-       didReturnWithSelectedPeople:(nonnull NSArray *)people;
+       didReturnWithSelectedPeople:(nonnull NSSet *)people;
 
 /**
  *  Tells the delegate that the people picker's ABNewPersonViewController did complete
