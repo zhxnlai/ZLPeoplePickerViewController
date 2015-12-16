@@ -282,7 +282,7 @@
         [searchItemsPredicate addObject:finalPredicate];
 
         NSPredicate *predicate =
-            [NSPredicate predicateWithFormat:@"ANY SELF.emails CONTAINS[c] %@",
+            [NSPredicate predicateWithFormat:@"ANY SELF.emails.address CONTAINS[c] %@",
                                              searchString];
         [searchItemsPredicate addObject:predicate];
 

@@ -34,8 +34,8 @@
     for (APContact *contact in contacts) {
 
         // only display one linked contacts        
-        if(contact.phones && [contact.phones count] > 0 && ![allPhoneNumbers containsObject:contact.phones[0]]) {
-            [allPhoneNumbers addObject:contact.phones[0]];
+        if(contact.phones && [contact.phones count] > 0 && ![allPhoneNumbers containsObject:contact.phones[0].number]) {
+            [allPhoneNumbers addObject:contact.phones[0].number];
         }
 
         // add new contact
