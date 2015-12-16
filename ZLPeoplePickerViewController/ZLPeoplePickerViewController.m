@@ -135,7 +135,7 @@
 
 #pragma mark - Action
 + (instancetype)presentPeoplePickerViewControllerForParentViewController:
-                    (UIViewController *)parentViewController {
+                    (nullable __kindof id<ZLPeoplePickerViewControllerDelegate>)parentViewController {
     UINavigationController *navController =
         [[UINavigationController alloc] init];
     ZLPeoplePickerViewController *peoplePicker =
@@ -370,6 +370,19 @@
          respondsToSelector:@selector(newPersonViewControllerDidCompleteWithNewPerson:)]) {
             [self.delegate newPersonViewControllerDidCompleteWithNewPerson:person];
          }
+}
+#pragma mark ABUnknownPersonViewControllerDelegate
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownCardViewController
+                 didResolveToPerson:(ABRecordRef)person {
+
+}
+#pragma mark ABPersonViewControllerDelegate
+- (BOOL)personViewController:(ABPersonViewController *)personViewController
+    shouldPerformDefaultActionForPerson:(ABRecordRef)person
+                               property:(ABPropertyID)property
+                             identifier:
+                                 (ABMultiValueIdentifier)identifierForValue {
+    return NO;
 }
 
 #pragma mark - ()
