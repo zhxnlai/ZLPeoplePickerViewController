@@ -41,7 +41,7 @@
 
 - (void)setup {
     _numberOfSelectedPeople = ZLNumSelectionNone;
-    self.filedMask = ZLContactFieldDefault;
+    self.fieldMask = ZLContactFieldDefault;
     self.allowAddPeople = YES;
 }
 
@@ -340,7 +340,7 @@
     ZLResultsTableViewController *tableController =
         (ZLResultsTableViewController *)
             self.searchController.searchResultsController;
-    tableController.filedMask = self.filedMask;
+    tableController.fieldMask = self.fieldMask;
     tableController.selectedPeople = self.selectedPeople;
     [tableController setPartitionedContactsWithContacts:searchResults];
     [tableController.tableView reloadData];

@@ -195,16 +195,16 @@
 }
 
 - (BOOL)shouldEnableCellforContact:(APContact *)contact {
-    if(self.filedMask == ZLContactFieldAll) {
+    if(self.fieldMask == ZLContactFieldAll) {
         return YES;
     }
     else {
-    return ((self.filedMask & ZLContactFieldPhones) &&
+    return ((self.fieldMask & ZLContactFieldPhones) &&
             contact.phones.count > 0) ||
-           ((self.filedMask & ZLContactFieldEmails) &&
+           ((self.fieldMask & ZLContactFieldEmails) &&
             contact.emails.count > 0) ||
-           ((self.filedMask & ZLContactFieldPhoto) && contact.thumbnail) ||
-           ((self.filedMask & ZLContactFieldAddresses) &&
+           ((self.fieldMask & ZLContactFieldPhoto) && contact.thumbnail) ||
+           ((self.fieldMask & ZLContactFieldAddresses) &&
             contact.addresses.count > 0);
     }
 }
