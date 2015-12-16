@@ -19,7 +19,6 @@
     ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
     ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
-@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (strong, nonatomic)
     ZLResultsTableViewController *resultsTableViewController;
