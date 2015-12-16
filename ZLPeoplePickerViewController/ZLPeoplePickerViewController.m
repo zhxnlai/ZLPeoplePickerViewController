@@ -20,8 +20,7 @@
     ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) UISearchController *searchController;
-@property (strong, nonatomic)
-    ZLResultsTableViewController *resultsTableViewController;
+@property (nonatomic, strong) ZLResultsTableViewController *resultsTableViewController;
 
 // for state restoration
 @property BOOL searchControllerWasActive;
@@ -52,8 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _resultsTableViewController = [[ZLResultsTableViewController alloc] init];
-    _searchController = [[UISearchController alloc]
+    self.resultsTableViewController = [[ZLResultsTableViewController alloc] init];
+    self.searchController = [[UISearchController alloc]
         initWithSearchResultsController:self.resultsTableViewController];
     self.searchController.searchResultsUpdater = self;
     [self.searchController.searchBar sizeToFit];
