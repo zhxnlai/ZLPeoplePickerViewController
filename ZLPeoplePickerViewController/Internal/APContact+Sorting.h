@@ -12,6 +12,10 @@
 
 //@property (strong,nonatomic) NSArray *santrizedPhones;
 
+- (NSString *)firstName;
+- (NSString *)lastName;
+- (NSString *)compositeName;
+
 - (NSString *)firstNameOrCompositeName;
 - (NSString *)lastNameOrCompositeName;
 //- (NSArray *)linkedContacts;

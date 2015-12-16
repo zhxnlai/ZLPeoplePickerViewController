@@ -23,5 +23,5 @@ Pod::Spec.new do |s|
   s.source_files = "ZLPeoplePickerViewController", "ZLPeoplePickerViewController/**/*.{h,m}"
   s.frameworks   = "UIKit", "AddressBook", "AddressBookUI"
   s.requires_arc = true
-  s.dependency "APAddressBook"
+  s.dependency "APAddressBook", '0.2.1'
 end

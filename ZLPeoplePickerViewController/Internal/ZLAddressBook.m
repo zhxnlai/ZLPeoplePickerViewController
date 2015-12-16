@@ -43,12 +43,10 @@ NSString *const ZLAddressBookDidChangeNotification =
 - (void)loadContacts:(void (^)(BOOL succeeded, NSError *error))completionBlock {
     __weak __typeof(self) weakSelf = self;
     self.addressBook.fieldsMask =
-        APContactFieldFirstName | APContactFieldLastName |
-        APContactFieldCompositeName | APContactFieldPhones |
-        APContactFieldThumbnail | APContactFieldRecordID |
-        APContactFieldEmails | APContactFieldAddresses;
+        APContactFieldDefault | APContactFieldThumbnail | APContactFieldLinkedRecordIDs |
+        APContactFieldEmailsOnly | APContactFieldEmailsWithLabels | APContactFieldAddresses;
     self.addressBook.filterBlock = ^BOOL(APContact *contact) {
-        return contact.compositeName != nil;
+        return contact.name.compositeName != nil;
     };
     [self.addressBook loadContacts:^(NSArray *contacts, NSError *error) {
         if (!error) {
