@@ -17,6 +17,7 @@ static NSString *const kCellIdentifier = @"cellID";
 
 @property (strong, nonatomic) NSMutableArray *partitionedContacts;
 @property (strong, nonatomic) NSMutableSet *selectedPeople;
+@property (assign, nonatomic) BOOL shouldHideUnmaskedContacts;
 
 @property (nonatomic) ZLContactField fieldMask;
 
