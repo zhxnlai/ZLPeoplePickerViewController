@@ -1,12 +1,12 @@
 PODS:
-  - APAddressBook (0.1.4):
-    - APAddressBook/Core
-  - APAddressBook/Core (0.1.4)
+  - APAddressBook (0.2.1):
+    - APAddressBook/Core (= 0.2.1)
+  - APAddressBook/Core (0.2.1)
 
 DEPENDENCIES:
   - APAddressBook
 
 SPEC CHECKSUMS:
-  APAddressBook: 2b23557950065f8eb048e421dd4a18373f69949b
+  APAddressBook: 90c0fb07579a47e10ef1a2344e23cfd35f388bec
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.39.0

@@ -251,15 +251,15 @@ static int numSelectionSliderMaxValue = 10;
 
     if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
         DemoTableViewControllerSectionFieldMaskTypeAll) {
-        self.peoplePicker.filedMask = ZLContactFieldAll;
+        self.peoplePicker.fieldMask = ZLContactFieldAll;
     } else if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
         DemoTableViewControllerSectionFieldMaskTypePhones) {
-        self.peoplePicker.filedMask = ZLContactFieldPhones;
+        self.peoplePicker.fieldMask = ZLContactFieldPhones;
     } else if (self.fieldMaskSegmentedControl.selectedSegmentIndex ==
                DemoTableViewControllerSectionFieldMaskTypeEmails) {
-        self.peoplePicker.filedMask = ZLContactFieldEmails;
+        self.peoplePicker.fieldMask = ZLContactFieldEmails;
     } else {
-        self.peoplePicker.filedMask = ZLContactFieldPhoto;
+        self.peoplePicker.fieldMask = ZLContactFieldPhoto;
     }
 
     if (self.numSelectionSegmentedControl.selectedSegmentIndex ==

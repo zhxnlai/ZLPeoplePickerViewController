@@ -201,6 +201,7 @@
 				0971D49D1A09B01600325B8D /* Frameworks */,
 				0971D49E1A09B01600325B8D /* Resources */,
 				84C8CBA57F703DD894BE91D4 /* Copy Pods Resources */,
+				974FE72DFFC308BD5D190419 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -314,6 +315,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLPeoplePickerViewControllerDemo/Pods-ZLPeoplePickerViewControllerDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		974FE72DFFC308BD5D190419 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLPeoplePickerViewControllerDemo/Pods-ZLPeoplePickerViewControllerDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

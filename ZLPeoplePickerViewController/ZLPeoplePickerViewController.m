@@ -19,10 +19,8 @@
     ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
     ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
-@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISearchController *searchController;
-@property (strong, nonatomic)
-    ZLResultsTableViewController *resultsTableViewController;
+@property (nonatomic, strong) ZLResultsTableViewController *resultsTableViewController;
 
 // for state restoration
 @property BOOL searchControllerWasActive;
@@ -42,7 +40,7 @@
 
 - (void)setup {
     _numberOfSelectedPeople = ZLNumSelectionNone;
-    self.filedMask = ZLContactFieldDefault;
+    self.fieldMask = ZLContactFieldDefault;
     self.allowAddPeople = YES;
 }
 
@@ -53,8 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _resultsTableViewController = [[ZLResultsTableViewController alloc] init];
-    _searchController = [[UISearchController alloc]
+    self.resultsTableViewController = [[ZLResultsTableViewController alloc] init];
+    self.searchController = [[UISearchController alloc]
         initWithSearchResultsController:self.resultsTableViewController];
     self.searchController.searchResultsUpdater = self;
     [self.searchController.searchBar sizeToFit];
@@ -135,7 +133,7 @@
 
 #pragma mark - Action
 + (instancetype)presentPeoplePickerViewControllerForParentViewController:
-                    (UIViewController *)parentViewController {
+                    (nullable __kindof id<ZLPeoplePickerViewControllerDelegate>)parentViewController {
     UINavigationController *navController =
         [[UINavigationController alloc] init];
     ZLPeoplePickerViewController *peoplePicker =
@@ -284,7 +282,7 @@
         [searchItemsPredicate addObject:finalPredicate];
 
         NSPredicate *predicate =
-            [NSPredicate predicateWithFormat:@"ANY SELF.emails CONTAINS[c] %@",
+            [NSPredicate predicateWithFormat:@"ANY SELF.emails.address CONTAINS[c] %@",
                                              searchString];
         [searchItemsPredicate addObject:predicate];
 
@@ -341,7 +339,7 @@
     ZLResultsTableViewController *tableController =
         (ZLResultsTableViewController *)
             self.searchController.searchResultsController;
-    tableController.filedMask = self.filedMask;
+    tableController.fieldMask = self.fieldMask;
     tableController.selectedPeople = self.selectedPeople;
     [tableController setPartitionedContactsWithContacts:searchResults];
     [tableController.tableView reloadData];
@@ -370,6 +368,19 @@
          respondsToSelector:@selector(newPersonViewControllerDidCompleteWithNewPerson:)]) {
             [self.delegate newPersonViewControllerDidCompleteWithNewPerson:person];
          }
+}
+#pragma mark ABUnknownPersonViewControllerDelegate
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownCardViewController
+                 didResolveToPerson:(ABRecordRef)person {
+
+}
+#pragma mark ABPersonViewControllerDelegate
+- (BOOL)personViewController:(ABPersonViewController *)personViewController
+    shouldPerformDefaultActionForPerson:(ABRecordRef)person
+                               property:(ABPropertyID)property
+                             identifier:
+                                 (ABMultiValueIdentifier)identifierForValue {
+    return NO;
 }
 
 #pragma mark - ()

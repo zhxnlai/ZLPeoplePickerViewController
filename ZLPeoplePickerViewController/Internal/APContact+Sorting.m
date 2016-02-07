@@ -9,18 +9,31 @@
 #import "APContact+Sorting.h"
 
 @implementation APContact (Sorting)
+
+- (NSString *)firstName {
+    return self.name.firstName;
+}
+
+- (NSString *)lastName {
+    return self.name.lastName;
+}
+
+- (NSString *)compositeName {
+    return self.name.compositeName;
+}
+
 - (NSString *)firstNameOrCompositeName {
-    if (self.firstName) {
-        return self.firstName;
+    if ([self.name.firstName length] > 0) {
+        return self.name.firstName;
     }
-    return self.compositeName;
+    return self.name.compositeName;
 }
 
 - (NSString *)lastNameOrCompositeName {
-    if (self.lastName) {
-        return self.lastName;
+    if ([self.name.lastName length] > 0) {
+        return self.name.lastName;
     }
-    return self.compositeName;
+    return self.name.compositeName;
 }
 
 - (NSArray *)linkedContacts {

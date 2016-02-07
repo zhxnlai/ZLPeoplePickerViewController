@@ -18,7 +18,7 @@ static NSString *const kCellIdentifier = @"cellID";
 @property (strong, nonatomic) NSMutableArray *partitionedContacts;
 @property (strong, nonatomic) NSMutableSet *selectedPeople;
 
-@property (nonatomic) ZLContactField filedMask;
+@property (nonatomic) ZLContactField fieldMask;
 
 - (void)setPartitionedContactsWithContacts:(NSArray *)contacts;
 - (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)product;
