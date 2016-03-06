@@ -30,6 +30,7 @@ static int numSelectionSliderMaxValue = 10;
 @property (strong, nonatomic)
     UISegmentedControl *selectionActionSegmentedControl;
 @property (strong, nonatomic) UISegmentedControl *returnActionSegmentedControl;
+@property (strong, nonatomic) UISwitch *fieldMaskFilterSwitch;
 @end
 
 @implementation DemoTableViewController
@@ -130,6 +131,9 @@ static int numSelectionSliderMaxValue = 10;
     if (section == DemoTableViewControllerSectionActionType) {
         return DemoTableViewControllerSectionActionTypeRowCount;
     }
+    if (section == DemoTableViewControllerSectionFieldMaskType) {
+        return DemoTableViewControllerSectionFieldMaskRowCount;
+    }
     return 1;
 }
 
@@ -187,13 +191,29 @@ static int numSelectionSliderMaxValue = 10;
 
     } break;
     case DemoTableViewControllerSectionFieldMaskType: {
-        cell.textLabel.text = @"FieldMask";
-        UISegmentedControl *control = [[UISegmentedControl alloc]
-            initWithItems:@[ @"All", @"Phones", @"Emails", @"Photo" ]];
-        control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        control.selectedSegmentIndex = 0;
-        cell.accessoryView = control;
-        self.fieldMaskSegmentedControl = control;
+        switch (indexPath.row) {
+            case DemoTableViewControllerSectionFieldMaskTypesRow: {
+                cell.textLabel.text = @"FieldMask";
+                UISegmentedControl *control = [[UISegmentedControl alloc]
+                                               initWithItems:@[ @"All", @"Phones", @"Emails", @"Photo" ]];
+                control.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                control.selectedSegmentIndex = 0;
+                cell.accessoryView = control;
+                self.fieldMaskSegmentedControl = control;
+            } break;
+            case DemoTableViewControllerSectionFieldMaskFilterRow: {
+                cell.textLabel.text = @"FieldMask Filter";
+                UISwitch *filterSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+                filterSwitch.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                filterSwitch.on = NO;
+                cell.accessoryView = filterSwitch;
+                [filterSwitch sizeToFit];
+
+                self.fieldMaskFilterSwitch = filterSwitch;
+            } break;
+            default:
+                break;
+        }
     } break;
     case DemoTableViewControllerSectionActionType: {
         switch (indexPath.row) {
@@ -272,6 +292,8 @@ static int numSelectionSliderMaxValue = 10;
         self.peoplePicker.numberOfSelectedPeople =
             [self customNumSelectionType];
     }
+
+    self.peoplePicker.shouldHideUnmaskedContacts = self.fieldMaskFilterSwitch.on;
 }
 
 #pragma mark Display and edit a person
