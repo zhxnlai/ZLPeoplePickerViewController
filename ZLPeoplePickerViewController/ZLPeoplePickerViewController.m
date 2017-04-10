@@ -63,6 +63,7 @@
     // didSelectRowAtIndexPath is called for both tables
     self.resultsTableViewController.tableView.delegate = self;
     self.searchController.delegate = self;
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     //    self.searchController.dimsBackgroundDuringPresentation = NO; //
     //    default is YES
     self.searchController.searchBar.delegate =
