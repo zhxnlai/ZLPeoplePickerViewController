@@ -19,12 +19,13 @@
     ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate,
     ABNewPersonViewControllerDelegate, ABUnknownPersonViewControllerDelegate,
     UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
-//@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) ZLResultsTableViewController *resultsTableViewController;
 
 // for state restoration
 @property BOOL searchControllerWasActive;
 @property BOOL searchControllerSearchFieldWasFirstResponder;
+
 
 @end
 
@@ -203,6 +204,22 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)aSearchBar {
     [aSearchBar setShowsCancelButton:YES animated:YES];
+    UIButton *cancelButton;
+    UIView *topView = aSearchBar.subviews[0];
+    for (UIView *subView in topView.subviews) {
+        if ([subView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
+            cancelButton = (UIButton*)subView;
+        }
+    }
+    if (cancelButton) {
+        if ([self.selectedPeople count] != 0) {
+            [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
+        }
+        else{
+            [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        }
+        
+    }
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)aSearchBar {
@@ -216,6 +233,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
+    
 
     if (![tableView isEqual:self.tableView]) {
         contact = [(ZLResultsTableViewController *)
@@ -237,9 +255,41 @@
 
     if ([self.selectedPeople containsObject:contact.recordID]) {
         [self.selectedPeople removeObject:contact.recordID];
+        UIButton *cancelButton;
+        UIView *topView = _searchController.searchBar.subviews[0];
+        for (UIView *subView in topView.subviews) {
+            if ([subView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
+                cancelButton = (UIButton*)subView;
+            }
+        }
+        if (cancelButton) {
+            if ([self.selectedPeople count] != 0) {
+                [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
+            }
+            else{
+                [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+            }
+            
+        }
     } else {
         if (self.selectedPeople.count < self.numberOfSelectedPeople) {
             [self.selectedPeople addObject:contact.recordID];
+            UIButton *cancelButton;
+            UIView *topView = _searchController.searchBar.subviews[0];
+            for (UIView *subView in topView.subviews) {
+                if ([subView isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
+                    cancelButton = (UIButton*)subView;
+                }
+            }
+            if (cancelButton) {
+                if ([self.selectedPeople count] != 0) {
+                    [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
+                }
+                else{
+                    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+                }
+                
+            }
         }
     }
 
