@@ -213,7 +213,7 @@
         }
     }
     if (cancelButton) {
-        if ([self.selectedPeople count] != 0) {
+        if ([self.selectedPeople count] > 0) {
             [cancelButton setTitle:@"Done" forState:UIControlStateNormal];
         }
         else{
