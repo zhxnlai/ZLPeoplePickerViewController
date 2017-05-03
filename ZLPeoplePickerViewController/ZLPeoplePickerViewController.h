@@ -48,7 +48,6 @@
 @property (weak, nonatomic, nullable) id<ZLPeoplePickerViewControllerDelegate> delegate;
 @property (nonatomic) ZLNumSelection numberOfSelectedPeople;
 @property (nonatomic, assign) BOOL allowAddPeople;
-//@property (nonatomic, strong) UISearchController *searchController;
 
 + (void)initializeAddressBook;
 //- (id)init __attribute__((unavailable("-init is not allowed, use
