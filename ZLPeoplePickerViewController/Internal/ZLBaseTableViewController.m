@@ -42,8 +42,8 @@
         }
 
         // add new contact
-        SEL selector = @selector(lastName);
-        if (contact.lastName.length == 0) {
+        SEL selector = @selector(firstName);
+        if (contact.firstName.length == 0) {
             selector = @selector(compositeName);
         }
         NSInteger index = [[LRIndexedCollationWithSearch currentCollation]
@@ -175,7 +175,7 @@
 #pragma mark - ()
 - (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)contact {
     NSString *stringToHightlight =
-        contact.lastName ? contact.lastName : contact.compositeName;
+        contact.firstName ? contact.firstName : contact.compositeName;
     NSRange rangeToHightlight =
         [contact.compositeName rangeOfString:stringToHightlight];
     NSMutableAttributedString *attributedString = [
